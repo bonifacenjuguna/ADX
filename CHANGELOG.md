@@ -1,5 +1,7 @@
 # Changelog
 
+> **Repository release record:** SavahBot 2.0.0 (dashboard + backend) and SavahLive 3.0.0 (Android companion) are maintained as separate version lines. This changelog is the historical record; no further feature releases are planned.
+
 Two products, two version lines. **SavahBot** (dashboard and backend) is at 2.x, **SavahLive** (the Android app) at 3.x. Entries up to 1.11.6 were released together.
 
 ## SavahBot 2.0.0

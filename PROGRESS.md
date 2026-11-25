@@ -1,4 +1,6 @@
-# Handoff (project paused)
+# Final handoff — development closed
+
+**Project status:** SavahBot 2.0.0 and SavahLive 3.0.0 are the final documented versions. Active feature development is closed; this repository is being preserved as the project record. The implementation notes, unbuilt optional items, and verification gaps below are retained for transparency.
 
 **State.** Web app, backend and the SavahLive Android app are working. The two products now have separate versions: SavahBot (dashboard + backend) 2.0.0 and SavahLive (Android) 3.0.0. The last Android build the owner confirmed on a phone was 1.11.5 (themes, dashboard Home, panel and tab memory). Not built, by choice: bot starter and backup data, and socials.
 

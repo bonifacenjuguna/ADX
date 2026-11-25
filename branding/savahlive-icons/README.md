@@ -20,3 +20,8 @@ notification and launcher marks, are separate and are left alone.)
 | Panel body | `pin`, `send` |
 | Notification | `eye_off` (hide), `lock`, `unlock`, `move` (reset), `phone` (open), `stop`, `palette` (next look) |
 | App screens | `play`, `stop`, `layers`, `link`, `paste`, `check`, `bell`, `battery`, `download`, `trash`, `bookmark`, `opacity`, `text`, `star`, `clock`, `chart`, `wifi`, `live`, `eye_off`, `close` |
+
+
+---
+
+**Project record:** These generated icon assets are part of the SavahLive 3.0.0 companion release. The source list and generator remain the canonical way to make changes; generated SVGs and Android drawables should stay in sync.

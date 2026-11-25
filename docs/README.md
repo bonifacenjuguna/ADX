@@ -24,3 +24,8 @@
 | TESTING.md | Running tests, what is and is not tested |
 | TROUBLESHOOTING.md | Symptoms and fixes |
 | ATLAS.md | Map of the codebase for developers |
+
+
+---
+
+**Documentation status:** This is the documentation index for the final SavahBot 2.0.0 / SavahLive 3.0.0 repository state. The guides are retained as a reference; deployment checks and verification caveats are documented rather than implied to be complete.

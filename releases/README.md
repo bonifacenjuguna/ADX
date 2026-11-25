@@ -19,3 +19,10 @@ manager when Android asks. To update, install the newer APK over the old one (sa
 Windows: `Get-FileHash SavahLive-1.5.0.apk -Algorithm SHA256`. Mac/Linux: `sha256sum -c SHA256SUMS`.
 
 How a release is made and protected: `docs/RELEASING.md`.
+
+
+---
+
+## Repository release status
+
+SavahBot 2.0.0 (dashboard + backend) and SavahLive 3.0.0 (Android) have separate version histories. This directory is reserved for immutable, signed APK release folders. The GitHub SavahLive 3.0.0 asset is currently named `unsigned.apk`; its checksum proves file integrity, not signing status. Do not describe that asset as signed. See the root README and `docs/RELEASING.md` for the release record and checks.

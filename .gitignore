@@ -12,3 +12,12 @@ local.properties
 # Loose APKs are build output. The only APKs that belong in Git are the signed releases under releases/.
 *.apk
 !releases/**/*.apk
+
+# Python and local test/build caches.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/

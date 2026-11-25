@@ -472,3 +472,10 @@ The 1.6.1 and 1.6.2 Kotlin was written without a compiler. If `./gradlew assembl
 15. **Offline:** turn on airplane mode: the panel shows an amber banner, the tab says Retrying and then Offline. Turn it off: the numbers return.
 16. **Automatic:** switch on Start when the app opens, close and reopen the app. Set Stop after the stream ends to 5 min, end the stream, and the overlay stops; start again and the Last stream card shows the summary.
 17. **Update:** with SavahBot on a higher version than the app, a "SavahLive x is available" card with Download appears on the home screen.
+
+
+---
+
+## Project status
+
+SavahLive 3.0.0 is the final documented Android companion version in this repository. Active feature development is closed. This guide remains available for anyone inspecting or building the archived source; it does not imply that every device, Android version, or release-signing path has been independently verified.

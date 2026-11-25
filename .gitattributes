@@ -14,3 +14,5 @@ gradlew text eol=lf
 
 # The checksum list is read by other tools: always LF.
 SHA256SUMS text eol=lf
+
+# SavahBot 2.0.0 / SavahLive 3.0.0 repository release: preserve artifact bytes and platform line endings.
