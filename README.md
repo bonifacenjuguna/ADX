@@ -29,8 +29,7 @@ There is no AI in the loop. Moderation is a set of explainable algorithms, and e
 
 > **SavahLive (Android)** is the only part you download. The dashboard and the backend are deployed, not installed ([Quick start](#quick-start)).
 
-<!-- EDIT: add a new row at the top of this table for every release (copy the row below and change the version). The link has the form
-     releases/savahlive/<version>/SavahLive-<version>.apk?raw=true  (?raw=true makes the browser download the file). -->
+<!-- Add the newest SavahLive release at the top. Link to the published GitHub release asset and record its published date and SHA-256 digest. -->
 
 | | Version | Released | Download | SHA-256 | Notes |
 |:-:|:--|:--|:--|:--|:--|
@@ -74,20 +73,7 @@ The result must match the hash above exactly.
 
 <sub>The Android source ZIP is a separate, clean source package; it is not an APK. Folder-only downloads use an external directory-download service. For a trusted, complete copy, use GitHub's whole-repository ZIP or clone the repository. Refresh the Android source ZIP after changing the app: `python scripts/pack_android.py`.</sub>
 
-**Install in 30 seconds:** download the APK on the phone, open it, allow *Install unknown apps* for your browser when Android asks, then pair it from **Manage › SavahLive** in the dashboard. Updating later is the same: install the newer APK over the old one and your pairing stays.
-
-<details>
-<summary><b>Check that the file is genuine</b></summary>
-
-The SHA-256 of the APK must match `SHA256SUMS` in the same folder.
-
-```powershell
-Get-FileHash SavahLive-3.0.0.apk -Algorithm SHA256     # Windows
-```
-```bash
-sha256sum -c SHA256SUMS                                # Mac / Linux
-```
-</details>
+<sub>**Installation status:** the current release asset is named `unsigned.apk`. Do not treat it as an end-user-ready APK until its signing status is confirmed and a properly signed release build is published. Once the signed build is available, install it from the release page and pair it through **Manage › SavahLive** in the dashboard.</sub>
 
 ---
 
