@@ -1,0 +1,88 @@
+name: Extract SavahBot archive
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/extract-savahbot-archive.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract archive and replace repository contents
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 \
+            "https://raw.githubusercontent.com/bonifacenjuguna/SavahBot/main/SavahBot-1_11_5.zip" \
+            -o /tmp/SavahBot-1_11_5.zip
+
+          python3 - <<'PY'
+          import os, shutil, stat, zipfile
+          from pathlib import Path, PurePosixPath
+
+          archive = Path("/tmp/SavahBot-1_11_5.zip")
+          repo = Path.cwd()
+          staging = Path("/tmp/savahbot-extracted")
+          staging.mkdir()
+          with zipfile.ZipFile(archive) as z:
+              entries = [i for i in z.infolist() if not i.is_dir()]
+              if not entries:
+                  raise SystemExit("Archive contains no files.")
+              safe = []
+              for info in entries:
+                  name = info.filename.replace("\\", "/")
+                  p = PurePosixPath(name)
+                  mode = info.external_attr >> 16
+                  if p.is_absolute() or ".." in p.parts or not p.parts:
+                      raise SystemExit(f"Unsafe archive path: {name}")
+                  if stat.S_ISLNK(mode):
+                      raise SystemExit(f"Symlink not permitted: {name}")
+                  safe.append((info, p))
+              first_parts = {p.parts[0] for _, p in safe}
+              strip_root = len(first_parts) == 1 and all(len(p.parts) > 1 for _, p in safe)
+              for info, p in safe:
+                  parts = p.parts[1:] if strip_root else p.parts
+                  if not parts:
+                      continue
+                  target = staging.joinpath(*parts)
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  with z.open(info) as src, target.open("wb") as dst:
+                      shutil.copyfileobj(src, dst)
+
+          if not any(staging.iterdir()):
+              raise SystemExit("Extraction produced an empty project.")
+          for item in repo.iterdir():
+              if item.name == ".git":
+                  continue
+              if item.is_dir() and not item.is_symlink():
+                  shutil.rmtree(item)
+              else:
+                  item.unlink()
+          for item in staging.iterdir():
+              target = repo / item.name
+              if item.is_dir():
+                  shutil.copytree(item, target)
+              else:
+                  shutil.copy2(item, target)
+          print("Extracted project entries:", len(list(repo.iterdir())))
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes detected after extraction."
+            exit 1
+          fi
+          git commit -m "Replace repository contents with SavahBot 1.11.5 archive"
+          git push origin HEAD:main
