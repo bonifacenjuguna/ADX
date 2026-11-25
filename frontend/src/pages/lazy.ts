@@ -40,7 +40,7 @@ export function lazyPage(meta: PageMeta, load: () => Promise<Page>): LazyPage {
           if (dead) return;
           mount(root, h("div", { class: "page" }, h("div", { class: "empty" }, icon("wifiOff", 28),
             h("h2", null, `${meta.title} could not be opened`),
-            h("p", { class: "muted" }, navigator.onLine === false ? "This page has not been saved on this device yet. Connect once and open it, and it will work offline from then on." : "The page could not be loaded. Check the connection and try again."),
+            h("p", { class: "muted" }, navigator.onLine === false ? "Not available offline yet. Open it once while online." : "The page could not be loaded. Check the connection and try again."),
             h("button", { class: "btn primary", type: "button", onclick: draw }, icon("refresh", 16), "Try again"))));
         });
       };

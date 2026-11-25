@@ -84,7 +84,7 @@ export const demo: Page = {
       signature = sig;
       if (alive) draw(d);
     };
-    mount(root, pageHead("flask", "Demo", "Everything here is simulated: no YouTube or Telegram traffic, no quota used. Moderation, commands and approvals behave exactly as they do live."), areaNav("demo"), box);
+    mount(root, pageHead("flask", "Demo", "Everything here is simulated. No YouTube or Telegram traffic, no quota used."), areaNav("demo"), box);
     void load().catch((e) => toast(e.message, "error"));
     const t = window.setInterval(() => void load().catch(() => undefined), 4000);
     return () => { alive = false; window.clearInterval(t); };

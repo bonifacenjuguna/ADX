@@ -15,7 +15,7 @@ export function renderPacks(host: HTMLElement, query: URLSearchParams): void {
   const load = async () => {
     const { categories } = await get<{ categories: Category[] }>("/api/knowledge/categories");
     mount(host,
-      lede("Everything the bot knows, split into packs by topic. Switch a pack Off, Shadow (watch only) or Live, open it to see and change its entries, or add your own."),
+      lede("Packs of what the bot knows. Set each Off, Shadow (watch only) or Live, and edit its entries."),
       categories.map((c) => h("details", { class: "k-cat", open: c.id === open },
         h("summary", null, icon("chevronRight", 16), h("div", { class: "grow" }, h("strong", null, c.title), h("span", { class: "k-note" }, c.about)),
           h("span", { class: "chip" }, `${c.active}/${c.packs.length} on`)),
@@ -171,12 +171,12 @@ function payload(p: PackPage): HTMLElement {
   }
   if (p.pack.kind === "corpus") {
     return kcard("list", `${(d.examples ?? []).length} examples (${d.label})`, h("div", { class: "k-stack" },
-      h("p", { class: "k-note" }, d.label === "spam" ? "Example spam. The word-statistics model learns what spam looks like from these, and new messages are compared against them." : "Everyday chat. Teaches the model that words like 'link' or 'free' are normal in ordinary sentences."),
+      h("p", { class: "k-note" }, d.label === "spam" ? "Example spam that new messages are compared against." : "Everyday chat. Teaches the model that words like 'link' or 'free' are normal in ordinary sentences."),
       h("ul", { class: "list" }, (d.examples ?? []).slice(0, 200).map((t: string) => h("li", null, h("q", null, t))))));
   }
   if (p.pack.kind === "maps") {
     return kcard("textSize", "Look-alikes and tricks", h("div", { class: "k-stack" },
-      h("p", { class: "k-note" }, "Before matching, these letters are turned back into plain ones, so 'ᴀ' or a Cyrillic 'о' cannot hide a word. Symbol sequences like |< also become letters."),
+      h("p", { class: "k-note" }, "Look-alike letters and symbols are turned into plain letters before matching, so they cannot hide a word."),
       h("div", { class: "k-chips" }, Object.entries(d.letters ?? {}).map(([k, v]) => h("span", { class: "chip" }, `${k} → ${v}`))),
       h("div", { class: "k-chips" }, (d.sequences ?? []).map((s: string[]) => h("span", { class: "chip" }, `${s[0]} → ${s[1]}`)))));
   }

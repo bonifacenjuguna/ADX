@@ -53,12 +53,12 @@ export function toolsCard(): HTMLElement {
       go.onclick = () => busy(go, async () => {
         try { mount(out, importView(await post<ImportReport>("/api/knowledge/bundle/import", data))); toast("Knowledge imported", "ok"); } catch (e) { fail(e); }
       });
-      mount(out, h("div", { class: "k-stack" }, h("p", { class: "k-note" }, "This is what the file would add. Nothing has changed yet. Your lessons are snapshotted first, and entries already here are skipped."),
+      mount(out, h("div", { class: "k-stack" }, h("p", { class: "k-note" }, "Nothing has changed yet. Your lessons are saved first, and entries you already have are skipped."),
         importView(preview), h("div", { class: "row" }, go)));
     } catch (e) { fail(e); }
   };
   return kcard("sliders", "Tools", h("div", { class: "k-stack" },
-    h("p", { class: "k-note" }, "Check your packs for trouble, see which detectors really fire, or carry all your own Knowledge (added phrases, pack settings, lessons) to another install."),
+    h("p", { class: "k-note" }, "Check your packs, see which detectors fire, or move your own Knowledge to another install."),
     h("div", { class: "row wrap" },
       btn("Check pack health", "shield", async () => mount(out, healthView(await get<Health>("/api/knowledge/health")))),
       btn("Detector hits", "chart", async () => {

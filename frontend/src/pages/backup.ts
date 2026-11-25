@@ -58,7 +58,7 @@ function keySheet(x: Exported): void {
   const done = h("button", { class: "btn primary", type: "button", disabled: true }, "Done") as HTMLButtonElement;
   ack.onchange = () => { done.disabled = !ack.checked; };
   const s = sheet("Save your key now", h("div", { class: "k-stack" },
-    lede("This key unlocks the backup. It is shown only now and SavahBot does not keep it. Without it (and your passphrase, if you set one) the file cannot be opened by anyone, including us."),
+    lede("This key unlocks the backup. It is shown only now and is not stored. Without it, the file cannot be opened."),
     h("code", { class: "secret", style: "font-size:1.05rem" }, x.key),
     h("p", { class: "muted small" }, `File fingerprint ${x.fingerprint}. After a restore you can check it matches.`),
     h("div", { class: "row wrap" },
@@ -89,7 +89,7 @@ export function restoreForm(opts: { firstRun?: boolean; onDone?: () => void }): 
   const restore = async (): Promise<void> => {
     const r = last;
     if (!r) return;
-    if (mode === "replace" && !confirm("Replace means what is in the backup becomes the only data for the chosen parts. A safety copy is kept so you can undo. Continue?")) return;
+    if (mode === "replace" && !confirm("Replace overwrites the chosen parts with the backup. A safety copy is kept so you can undo. Continue?")) return;
     const startedAt = Date.now();
     let prev = "";
     try { prev = (await get<Prog>("/api/backup/progress")).id ?? ""; } catch { /* a first look that fails is fine */ }
@@ -197,7 +197,7 @@ export function restoreForm(opts: { firstRun?: boolean; onDone?: () => void }): 
             if (p.state === "failed") { failed(p.error || "The restore failed."); return; }
           } catch { /* still unreachable */ }
         }
-        failed("Could not reach the server to see how it ended. Reload the page and check Settings, or press Undo the last restore.");
+        failed("Could not reach the server. Reload and check Settings, or press Undo the last restore.");
       } else failed(e instanceof Error ? e.message : String(e));
     }
   };
@@ -233,7 +233,7 @@ function resetCard(): HTMLElement {
     return h("div", { class: "n-row" }, h("div", { class: "n-row-main" }, h("strong", null, title), h("span", { class: "muted small" }, text)), b);
   };
   return card("undo", "Reset", h("div", { class: "k-stack", style: "padding:12px 14px" },
-    lede("Put one thing back to how it came, without touching anything else. Chat history, bans, commands and sign-in are never changed here."),
+    lede("Reset one thing to its default. Chat history, bans, commands and sign-in are never changed."),
     h("div", null,
       row("sliders", "Settings changed in the dashboard", "Every option you changed from the dashboard goes back to its default (or to what your environment sets).", "Reset settings",
         "Reset every setting you changed in the dashboard back to its default?",
@@ -243,7 +243,7 @@ function resetCard(): HTMLElement {
           for (const x of mine) await del(`/api/settings/${x.name}`);
           return mine.length ? `Reset ${mine.length} ${mine.length === 1 ? "setting" : "settings"}` : "Nothing to reset";
         }),
-      row("desk", "Card layouts", "Desk, Moderation, Insights, Notifications and Weather go back to the default arrangement, on computers and phones.", "Reset layouts",
+      row("desk", "Card layouts", "Desk, Moderation, Insights, Notifications and Weather return to the default layout.", "Reset layouts",
         "Put every page's cards back to the default order, for both desktop and mobile?",
         async () => {
           const r = await post<{ layouts: unknown; reset: number }>("/api/layouts/reset", { pages: [], kinds: [] });
@@ -283,7 +283,7 @@ export const backup: Page = {
         card("download", "Make a backup", h("div", { class: "k-stack", style: "padding:12px 14px" },
           lede("One file, encrypted with a random 256-bit key that is shown once and never stored. Pick what goes in."),
           h("div", { class: "k-stack" }, info.scopes.map((s) => h("label", { class: "check" }, h("input", { type: "checkbox", checked: s.default, onchange: (e: Event) => picks.set(s.id, (e.target as HTMLInputElement).checked) }), ` ${s.label} `, h("span", { class: "muted small" }, `(${s.rows.toLocaleString()} rows)`)))),
-          h("p", { class: "muted small" }, "Never included, whatever you tick: signed-in sessions, push-notification device tokens, the server's signing secret and environment variables. Sign-in methods are only included if you tick the last box. Demo mode's sample data is never exported or imported: the dashboard already has its own."),
+          h("p", { class: "muted small" }, "Never included: sessions, push device tokens, the signing secret and environment variables. Sign-in methods are included only if you tick the last box. Demo data is never exported."),
           revealable(pass), h("div", { class: "row" }, go),
           info.last_export ? h("p", { class: "muted small" }, `Last backup: ${new Date(info.last_export * 1000).toLocaleString()}`) : null), { flush: true }),
         card("upload", "Restore a backup", h("div", { class: "k-stack", style: "padding:12px 14px" }, restoreForm({ onDone: () => void load().catch(fail) }), undo), { flush: true }),

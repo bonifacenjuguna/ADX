@@ -21,7 +21,7 @@ const SOURCE: Record<string, string> = { decision: "Your decision", teach: "Taug
 const LEARN_HELP: Record<string, string> = {
   off: "The bot does not look for patterns in your decisions. Approve and Reject still work as always.",
   suggest: "The bot proposes changes from your decisions and you accept or dismiss each one. Nothing changes without you.",
-  auto: "The bot applies the confident suggestions itself. Every change is logged and can be undone here. Safe phrases always wait for you.",
+  auto: "The bot applies confident suggestions itself. Every change is logged and can be undone. Safe phrases always wait for you.",
 };
 
 export function renderLearning(host: HTMLElement, initial: Part = "review"): void {
@@ -29,7 +29,7 @@ export function renderLearning(host: HTMLElement, initial: Part = "review"): voi
   const views = seg<Part>("Learning view", [
     { id: "review", label: "Review", icon: "inbox" }, { id: "lessons", label: "Lessons", icon: "book" },
     { id: "quality", label: "Quality", icon: "target" }, { id: "history", label: "History", icon: "history" }], initial, (v) => show(v));
-  mount(host, h("div", { class: "k-stack" }, lede("Every Approve, Reject and “teach” is a lesson. The bot learns by plain counting, with no AI model, and nothing leaves your bot. You can see, correct and forget every lesson."),
+  mount(host, h("div", { class: "k-stack" }, lede("Every Approve, Reject and teach is a lesson. Nothing leaves your bot, and you can correct or forget any lesson."),
     views.el, body));
   const show = (p: Part) => {
     const draw = p === "review" ? review : p === "lessons" ? lessons : p === "quality" ? quality : history;
@@ -195,7 +195,7 @@ async function history(host: HTMLElement): Promise<void> {
       l.undone ? h("span", { class: "chip" }, "undone") : h("button", { class: "btn small ghost", type: "button", onclick: (e: Event) => busy(e.currentTarget as HTMLButtonElement, async () => { await post(`/api/knowledge/log/${l.id}/undo`); again(); }, "Undone") }, icon("undo", 14), "Undo"))))
       : h("p", { class: "k-note" }, "Nothing has been changed yet. Accepted suggestions and automatic changes are listed here, each with an Undo."), { scroll: true }),
     kcard("save", "Snapshots of what it has learned", h("div", { class: "k-stack" },
-      h("p", { class: "k-note" }, "A snapshot is a saved copy of all lessons. Restore one to go back to how the bot was. Restoring and resetting save a snapshot first, so they can be undone too."),
+      h("p", { class: "k-note" }, "A snapshot is a saved copy of all lessons. Restoring or resetting saves one first, so it can be undone."),
       h("div", { class: "row" }, name, h("button", { class: "btn small primary", type: "button", onclick: (e: Event) => busy(e.currentTarget as HTMLButtonElement, async () => { await post("/api/knowledge/snapshots", { name: name.value || "Snapshot" }); toast("Snapshot saved"); again(); }) }, icon("plus", 14), "Save snapshot")),
       snaps.items.length ? h("div", null, snaps.items.map((s) => h("div", { class: "k-log" }, h("span", { class: "txt" }, h("strong", null, s.name), h("span", { class: "muted small" }, ` · ${plural(s.count, "lesson")} · ${ago(s.ts)}`)),
         h("div", { class: "row" },

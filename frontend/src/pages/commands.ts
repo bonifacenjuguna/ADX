@@ -163,8 +163,8 @@ export const commands: Page = {
 
     const drawReplies = () => {
       mount(replyBox,
-        triggersOn ? null : h("div", { class: "banner" }, icon("info", 18), h("span", null, "Auto-replies are switched off in Settings (TRIGGERS_ENABLED). Your rules are saved but the bot will not answer.")),
-        h("div", { class: "card-note" }, "When a viewer sends the phrase, the bot answers. Commands that start with ! always take priority, and the bot answers at most once per message."),
+        triggersOn ? null : h("div", { class: "banner" }, icon("info", 18), h("span", null, "Auto-replies are off in Settings. Your rules are saved but the bot will not answer.")),
+        h("div", { class: "card-note" }, "The bot answers when a viewer sends the phrase. Commands starting with ! take priority."),
         triggers.length ? h("div", { class: "cards-grid" }, triggers.map((t) => h("div", { class: `item-card${t.enabled ? "" : " off"}` },
           h("div", { class: "row between nowrap" }, h("span", { class: "meta" }, icon("quote", 16), h("strong", { style: "overflow-wrap:anywhere" }, t.phrase)),
             h("input", { type: "checkbox", class: "switch", checked: t.enabled, "aria-label": `Enable auto-reply for ${t.phrase}`, onchange: (e: Event) => void patch(`/api/triggers/${t.id}`, { enabled: (e.target as HTMLInputElement).checked }).then(load).catch((x) => toast(x.message, "error")) })),
@@ -243,7 +243,7 @@ export const commands: Page = {
 
     const drawTimers = () => {
       mount(timerBox,
-        h("div", { class: "card-note" }, "Timers post on their own, only while the stream is live. Use a time, a number of chat lines, or both, and choose whether a timer repeats or posts just once."),
+        h("div", { class: "card-note" }, "Timers post only while the stream is live. Use a time, a number of chat lines, or both."),
         timers.length ? h("div", { class: "cards-grid" }, timers.map((t) => {
           const left = t.max_runs > 1 && t.enabled ? Math.max(0, t.max_runs - t.runs) : 0;
           return h("div", { class: `item-card${t.enabled ? "" : " off"}` },

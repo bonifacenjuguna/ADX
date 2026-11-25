@@ -393,7 +393,7 @@ function guideBody(kind: GuideKind, done: () => void): HTMLElement {
     case "ios-safari":
       lead = "iPhone and iPad install web apps from Safari's Share menu. It takes three taps.";
       steps.push(
-        step(1, "Tap the Share button", "It is the square with an arrow, in Safari's toolbar. On iPad it is at the top right. If you do not see it, open the ••• menu first.", "share"),
+        step(1, "Tap the Share button", "The square with an arrow in Safari's toolbar. If you do not see it, open the ••• menu first.", "share"),
         step(2, "Choose Add to Home Screen", "Scroll down in the Share menu if you cannot see it. If you see Open as Web App, leave it on.", "plusSquare"),
         step(3, "Tap Add", "SavahBot appears on your Home Screen. Open it from there for the full screen app.", "check"));
       break;
@@ -402,7 +402,7 @@ function guideBody(kind: GuideKind, done: () => void): HTMLElement {
       steps.push(
         step(1, "Open the Share menu", `Tap the Share button in ${env.iosBrowser}'s address bar or menu. It looks like a square with an arrow.`, "share"),
         step(2, "Choose Add to Home Screen", "Scroll down in the list if you cannot see it.", "plusSquare"),
-        step(3, "Tap Add", "SavahBot appears on your Home Screen. If the option is missing, open this page in Safari and use its Share menu.", "check"));
+        step(3, "Tap Add", "If the option is missing, open this page in Safari.", "check"));
       break;
     case "ios-open-safari":
       lead = env.inApp ? "This page is open inside another app, which cannot add it to your Home Screen." : "This version of iOS can only add web apps from Safari.";

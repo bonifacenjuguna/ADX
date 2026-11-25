@@ -151,7 +151,7 @@ export const setup: Page = {
       const modeText = src.mode === "link" ? "Using your link. When that video is not live, it goes back to searching if auto-search is on." : src.mode === "auto" ? "Searching your channel for a live stream automatically." : "Nothing to attach to: auto-search is off and no link is set.";
       return section("Where the stream comes from",
         h("p", { class: "muted small" }, modeText, attached ? " Attached now: " : "", attached ? h("span", { class: "mono" }, attached) : ""),
-        h("label", { class: "row between", style: "align-items:center;gap:12px" }, h("span", null, h("strong", null, "Search for the live stream automatically"), h("span", { class: "muted small", style: "display:block" }, "Looks for your channel's live stream every few minutes. It costs YouTube quota, so turn it off if you always paste a link.")),
+        h("label", { class: "row between", style: "align-items:center;gap:12px" }, h("span", null, h("strong", null, "Search for the live stream automatically"), h("span", { class: "muted small", style: "display:block" }, "Checks for your live stream every few minutes. Uses YouTube quota.")),
           h("input", { type: "checkbox", class: "switch", checked: src.auto_detect, "aria-label": "Search automatically", onchange: (e: Event) => void save({ auto_detect: (e.target as HTMLInputElement).checked }, (e.target as HTMLInputElement).checked ? "Auto-search is on" : "Auto-search is off")() })),
         h("div", { class: "stack", style: "gap:8px" }, h("strong", null, "Stream link or ID"), field,
           h("div", { class: "row wrap", style: "gap:8px" },
@@ -186,7 +186,7 @@ export const setup: Page = {
             h("button", { class: "btn primary", type: "button", onclick: run(async () => { const r = await post<{ url: string }>("/api/youtube/oauth/start"); location.href = r.url; }) }, icon("youtube", 16), connected ? "Reconnect Google account" : "Connect Google account"),
             connected ? h("button", { class: "btn ghost", type: "button", onclick: run(async () => { await post("/api/youtube/disconnect"); await load(); }, "Disconnected") }, "Disconnect") : null)),
         section("Verify moderator access",
-          h("p", { class: "muted small" }, "Asks YouTube what the signed-in account can really do for the target channel. It never deletes or bans anything, and deleting and banning cannot be tested ahead of time, so they show as Unverified until YouTube has answered a real action."),
+          h("p", { class: "muted small" }, "Checks what the signed-in account can do for the channel. Nothing is deleted or banned. Deleting and banning show as Unverified until a real action runs."),
           h("div", null, h("button", { class: "btn ghost", type: "button", onclick: run(async () => { verify = await post<Verify>("/api/youtube/verify"); draw(); }) }, icon("check", 16), "Verify access")),
           verify ? h("ul", { class: "check-list" }, verify.checks.map((c) => checkRow(c.ok === true ? "ok" : c.ok === false ? "bad" : "warn", c.ok === true ? "OK" : c.ok === false ? "Fix" : "Unverified", [h("strong", null, `${c.label}: `), c.detail]))) : null),
         section("Check the Google connection",
@@ -196,7 +196,7 @@ export const setup: Page = {
             h("ul", { class: "check-list" }, diag.checks.map((c) => checkRow(c.ok ? "ok" : "bad", c.ok ? "OK" : "Fix", [c.text]))),
             copyRow(`Client ID the bot sends (${diag.client_id_length} characters)`, diag.client_id || "(empty)"),
             copyRow("Redirect address the bot sends", diag.redirect_uri || "(empty)"),
-            h("p", { class: "muted small" }, "Compare both with the SavahBot client in Google Cloud: they must match exactly. The client secret is never shown."),
+            h("p", { class: "muted small" }, "Both must match the SavahBot client in Google Cloud. The client secret is never shown."),
             h("p", { class: "muted small" }, diag.note)) : null),
         pager());
     };

@@ -82,7 +82,7 @@ async function alertsCard(el: HTMLElement, p: Prefs): Promise<HTMLElement> {
       f.kind === "threshold" ? [lab("Watch", variable), h("div", { class: "row wrap" }, lab("When", op), lab("Value", thr), lab("Within next (hours)", win))] : lab("Send at", at),
       lab("Notification category", cats), h("div", { class: "row wrap" }, lab("Check every (min)", every), lab("Repeat no sooner than (min)", cool)),
       f.kind === "threshold" ? h("div", { class: "row wrap" }, lab("Only between", from), lab("and", to)) : null,
-      h("p", { class: "muted small" }, "Quiet hours and push settings from Notifications still apply. Alerts come from SavahBot's own reading of the forecast. They are not official weather warnings."));
+      h("p", { class: "muted small" }, "Quiet hours and push settings still apply. These are not official weather warnings."));
     const save = h("button", { class: "btn primary", type: "button" }, "Save rule") as HTMLButtonElement;
     const sh = sheet(r ? "Edit rule" : "New rule", h("div", { class: "k-stack" }, body, save));
     save.onclick = () => busy(save, async () => {

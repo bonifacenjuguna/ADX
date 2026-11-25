@@ -52,7 +52,7 @@ async function withStepUp<T>(run: () => Promise<T>): Promise<T | undefined> {
 function codesSheet(codes: string[]): void {
   const text = codes.join("\n");
   sheet("Your recovery codes", h("div", { class: "k-stack" },
-    lede("Each code works once, in place of a missing sign-in method. They are shown only now. Save them somewhere safe, away from this device."),
+    lede("Each code works once. They are shown only now, so save them somewhere safe."),
     h("pre", { class: "codes" }, text),
     h("div", { class: "row wrap" },
       h("button", { class: "btn small", type: "button", onclick: () => { void navigator.clipboard?.writeText(text).then(() => toast("Copied", "ok")); } }, icon("copy", 15), "Copy"),
@@ -85,8 +85,8 @@ export const security: Page = {
       const tone = r.score >= 85 ? "ok" : r.score >= 60 ? "warn" : "bad";
       return card("shield", "Security check", h("div", { class: "k-stack", style: "padding:12px 14px" },
         figures([{ value: `${r.score}%`, label: "protected", tone }, { value: String(ov.methods), label: "sign-in methods" }, { value: String(r.failed_logins_24h), label: "failed attempts today", tone: r.failed_logins_24h ? "warn" : "ok" }]),
-        ov.enforced ? h("p", { class: "muted small" }, "Two-step sign-in is on: every sign-in must prove any two of your password, a passkey and an authenticator code.")
-          : h("p", { class: "muted small", style: "color:var(--warn)" }, "Two-step sign-in is OFF. Anyone with your password can sign in. Add a passkey or an authenticator app below to turn it on."),
+        ov.enforced ? h("p", { class: "muted small" }, "Two-step sign-in is on. Every sign-in needs two of: password, passkey, authenticator code.")
+          : h("p", { class: "muted small", style: "color:var(--warn)" }, "Two-step sign-in is off. Add a passkey or an authenticator app to turn it on."),
         h("ul", { class: "list" }, r.checks.map((c) => h("li", null, statusIcon(c.ok ? "ok" : "warn", 20), " ", c.title, c.ok ? null : h("div", { class: "muted small" }, c.fix))))), { flush: true });
     }
 
@@ -168,7 +168,7 @@ export const security: Page = {
           } catch (x) { err.textContent = (x as Error).message; code.select(); }
         });
       } },
-        lede("Scan this with an authenticator app (Google Authenticator, Authy, 1Password, Microsoft Authenticator and others), then type the 6-digit code it shows."),
+        lede("Scan with an authenticator app, then enter the 6-digit code."),
         qr,
         h("details", null, h("summary", null, "Cannot scan? Enter the key by hand"), h("code", { class: "secret" }, setup.secret.replace(/(.{4})/g, "$1 ").trim()),
           h("div", null, h("a", { href: setup.uri, class: "small" }, "Open in an authenticator app on this phone"))),
@@ -199,7 +199,7 @@ export const security: Page = {
         } catch (x) { fail(x); }
       }) }, icon("alert", 16), ov.lockdown ? "Lift lockdown" : "Turn on lockdown");
       return card("alert", "Emergency lockdown", h("div", { class: "k-stack", style: "padding:12px 14px" },
-        lede("If you think someone else has access, turn this on. Every other device is signed out immediately and only this Security page keeps working. Lifting it needs your password again. You can also send /lockdown to the bot on Telegram."), h("div", { class: "row" }, btn)), { flush: true });
+        lede("Signs out every other device immediately. Lifting it needs your password. You can also send /lockdown to the bot on Telegram."), h("div", { class: "row" }, btn)), { flush: true });
     }
 
     mount(root, h("div", { class: "page" }, areaNav("security"), pageHead("shield", "Security", "How you sign in, which devices are signed in, and what has happened."), body));

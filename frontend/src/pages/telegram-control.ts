@@ -56,7 +56,7 @@ export function telegramControl(onChange: () => void): HTMLElement {
         row("Telegram", "The master switch. Off: the webhook is removed, polling stops, nothing is heard and nothing is sent.", sw(k.enabled, "Telegram on", (v) => void save({ enabled: v }, v ? "Telegram is on" : "Telegram is off"))),
         row("Listen to commands", "Off: the bot ignores everything you type or tap, but can still send you alerts.", sw(k.listen, "Listen to commands", (v) => void save({ listen: v }), off)),
         row("Send messages", "Off: the bot sends nothing at all, not alerts and not replies.", sw(k.send, "Send messages", (v) => void save({ send: v }), off)),
-        row("Allow changes", "Off = read-only. Commands like /mode, /mod, /say, /approve, /lockdown and the buttons for them are refused. Looking things up still works.", sw(k.actions, "Allow changes", (v) => void save({ actions: v }), off)),
+        row("Allow changes", "Off is read-only. Commands that change things are refused. Lookups still work.", sw(k.actions, "Allow changes", (v) => void save({ actions: v }), off)),
         row("Allow claiming", "Off: nobody can make themselves the owner with /claim. Leave it off once your bot is claimed.", sw(k.claim_open, "Allow claiming", (v) => void save({ claim_open: v })))),
       h("div", { class: "sp-card" }, h("h3", null, "Quiet for a while"),
         h("p", { class: "muted small" }, "Pause Telegram without switching anything off. It comes back by itself."),
@@ -71,10 +71,10 @@ export function telegramControl(onChange: () => void): HTMLElement {
         dangerRow("Replace the webhook secret", k.secret_from_env ? "The secret is set in your environment. Change TELEGRAM_WEBHOOK_SECRET there." : "Anything signed with the old secret stops working at once.", "Replace", "Webhook secret replaced", "/api/telegram/rotate-secret"),
         dangerRow("Unlink the owner", k.owner_from_env ? "TELEGRAM_OWNER_ID is set in your environment, so it keeps applying. Remove it there too." : "The bot forgets who you are and obeys nobody until it is claimed again.", "Unlink", "Owner unlinked", "/api/telegram/unlink"),
         dangerRow("Cut Telegram off", "Switch off, unlink the owner, close claiming, replace the secret and remove the webhook.", "Cut off", "Telegram is cut off", "/api/telegram/shutdown", () => "Telegram is cut off. Now revoke the token in BotFather."),
-        h("p", { class: "muted small" }, "The token itself can only be replaced in Telegram: open @BotFather, send /revoke, choose the bot, then set the new TELEGRAM_BOT_TOKEN and redeploy.")),
+        h("p", { class: "muted small" }, "To replace the token, use @BotFather in Telegram (/revoke), then set the new TELEGRAM_BOT_TOKEN and redeploy.")),
       h("div", { class: "sp-card" }, h("div", { class: "row between" }, h("h3", null, "Recent activity"),
         log.length ? h("button", { class: "btn ghost", type: "button", onclick: (e: Event) => busy(e.currentTarget as HTMLButtonElement, async () => { await del("/api/telegram/log"); await load(); }, "Cleared") }, "Clear") : null),
-        h("p", { class: "muted small" }, "What happened, not what was said: command names, strangers who were ignored, wrong claim passwords and setting changes. Messages, tokens and passwords are never recorded."),
+        h("p", { class: "muted small" }, "What happened, not what was said. Messages, tokens and passwords are never recorded."),
         log.length
           ? h("ul", { class: "plain", style: "margin:0;padding:0;list-style:none" }, folded(log, (e) =>
             h("li", { style: "display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line)" },

@@ -156,8 +156,8 @@ def test_the_hello_tells_the_app_which_version_is_current():
         dev = await sl.device(bearer(d["key"]))
         gen = sl.stream(dev, 0, lambda: asyncio.sleep(0, False))
         hello = body((await next_events(gen))[0])
-        from app import __version__
-        assert hello["update"] == {"version": __version__, "url": "https://example.com/app.apk"}
+        from app import __savahlive_version__
+        assert hello["update"] == {"version": __savahlive_version__, "url": "https://example.com/app.apk"}
         await gen.aclose()
     run(go())
 

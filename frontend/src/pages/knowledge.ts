@@ -62,7 +62,7 @@ function renderOverview(host: HTMLElement): void {
     const benchBtn = h("button", { class: "btn primary", type: "button" }, icon("target", 16), "Run accuracy check") as HTMLButtonElement;
     benchBtn.onclick = () => busy(benchBtn, async () => { mount(benchBox, renderBenchmark(await post<Benchmark>("/api/knowledge/benchmark"))); });
     mount(host,
-      lede("SavahBot's knowledge works like a library of patterns plus a team of detectors that read them. It all runs inside your bot: no AI service, no outside calls to judge a message."),
+      lede("Patterns and detectors that run inside your bot. No AI service and no outside calls."),
       kcard("sparkle", "State of the knowledge", h("div", { class: "k-stack" },
         h("div", { class: "row between" }, h("span", { class: "muted" }, st.enabled ? "On: adding evidence to every message" : "Off: the bot behaves exactly as in 1.1.5"),
           h("label", { class: "check small" }, master, "Use it")),
@@ -81,11 +81,11 @@ function renderOverview(host: HTMLElement): void {
         h("div", { class: "row" }, h("button", { class: "btn primary small", type: "button", onclick: () => goKnowledge(ov.next!.kind === "suggestions" ? "learning" : "detectors") }, "Take a look"))) : null,
       kcard("package", "What it knows", h("div", { class: "k-grid" }, ov.categories.map((c) => h("a", { class: "tile", href: `/settings?tab=knowledge&view=packs&cat=${c.id}` },
         h("span", { class: "tile-ico" }, icon("database", 22)), h("span", { class: "tile-text" }, h("strong", null, c.title), h("span", null, `${plural(c.entries, "entry", "entries")} · ${c.active}/${c.packs} on`)), icon("chevronRight", 16, "tile-go"))))),
-      kcard("eyeOff", "Caught in shadow mode", h("div", { class: "k-stack" }, h("p", { class: "k-note" }, "These messages were noticed by a detector in shadow mode. Nothing was done about them. If they look right, switch that detector to live."),
+      kcard("eyeOff", "Caught in shadow mode", h("div", { class: "k-stack" }, h("p", { class: "k-note" }, "Noticed by a detector in shadow mode. No action was taken. If they look right, set that detector to Live."),
         shadowList(ov.recent_shadow), h("div", { class: "row" }, h("button", { class: "btn small", type: "button", onclick: () => goKnowledge("detectors") }, icon("target", 15), "Open detectors")))),
       toolsCard(),
       kcard("chart", "Accuracy check", h("div", { class: "k-stack" },
-        h("p", { class: "k-note" }, "Runs a fixed set of real-looking spam and normal chat lines through your bot and shows what it catches with and without the intelligence layer. It never touches your chat."),
+        h("p", { class: "k-note" }, "Runs sample spam and normal chat through your bot and shows what it catches. Your chat is not touched."),
         h("div", { class: "row" }, benchBtn), benchBox)),
       ov.feeds.total ? kcard("radio", "Live data", h("div", { class: "row between" }, h("span", { class: "muted" }, `${ov.feeds.enabled} of ${ov.feeds.total} lists on · ${plural(ov.feeds.entries, "domain")} · last refreshed ${ago(ov.feeds.last_ok)}${ov.feeds.errors ? ` · ${plural(ov.feeds.errors, "problem")}` : ""}`),
         h("button", { class: "btn small", type: "button", onclick: () => goKnowledge("live") }, "Manage"))) : null);
@@ -132,7 +132,7 @@ function renderTest(host: HTMLElement, query: URLSearchParams): void {
   go.onclick = () => busy(go, run);
   box.addEventListener("keydown", (e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") go.click(); });
   mount(host,
-    lede("Type any message to see exactly how the bot would judge it: the score, which rules fired and why, what only shadow mode noticed, and every raw match. Nothing is saved and nobody is punished."),
+    lede("Type a message to see how the bot would judge it. Nothing is saved and nobody is punished."),
     kcard("flask", "Check a message", h("div", { class: "k-stack" }, box, h("div", { class: "row" }, go),
       h("div", { class: "k-examples" }, EXAMPLES.map((t) => h("button", { class: "chip pick", type: "button", onclick: () => { box.value = t; go.click(); } }, t.length > 34 ? t.slice(0, 33) + "…" : t))))),
     out);

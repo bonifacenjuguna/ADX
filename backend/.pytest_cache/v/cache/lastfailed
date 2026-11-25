@@ -1,0 +1,12 @@
+{
+  "tests/test_api.py::test_timer_modes_and_auto_replies": true,
+  "tests/test_backup.py::test_key_format_has_a_checksum_and_never_appears_in_the_file": true,
+  "tests/test_backup.py::test_sequence_repair_skips_tables_with_text_ids_on_postgres": true,
+  "tests/test_backup.py::test_merge_and_replace_write_in_batches_and_report_bad_rows": true,
+  "tests/test_backup.py::test_import_reports_progress_and_can_be_cancelled_and_rolled_back": true,
+  "tests/test_backup.py::test_merge_carries_on_when_one_table_fails_and_replace_does_not": true,
+  "tests/test_backup.py::test_progress_and_cancel_never_answer_401": true,
+  "tests/test_bans.py::test_people_profile_works_for_anyone_and_activity_entries_carry_the_person": true,
+  "tests/test_hub_demo.py::test_analytics_timeline_has_per_bucket_people_and_actions": true,
+  "tests/test_notify.py::test_approval_push_carries_one_signed_action_link_and_the_waiting_count": true
+}

@@ -25,8 +25,8 @@ const isIOS = (): boolean => /iphone|ipad|ipod/i.test(navigator.userAgent) || (n
 
 export async function pushState(cfg: PushConfig | null): Promise<PushState> {
   if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) {
-    if (isIOS() && !isStandalone()) return { kind: "needs-install", why: "On iPhone and iPad, push works only after you add SavahBot to the Home Screen (Share, then Add to Home Screen) and open it from there. iOS 16.4 or newer is needed." };
-    return { kind: "unsupported", why: "This browser cannot receive push messages. Try Chrome, Edge, Firefox, or Safari 16.4+ with the app added to the Home Screen." };
+    if (isIOS() && !isStandalone()) return { kind: "needs-install", why: "On iPhone and iPad, add SavahBot to the Home Screen and open it from there. Needs iOS 16.4 or newer." };
+    return { kind: "unsupported", why: "This browser cannot receive push messages. Try Chrome, Edge, Firefox, or Safari 16.4+." };
   }
   if (isIOS() && !isStandalone()) return { kind: "needs-install", why: "On iPhone and iPad, open SavahBot from the Home Screen icon first. Safari tabs cannot receive push." };
   if (!cfg || !cfg.push_ready || !cfg.web_ready) return { kind: "not-configured" };

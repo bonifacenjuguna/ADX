@@ -1,5 +1,25 @@
 # Changelog
 
+Two products, two version lines. **SavahBot** (dashboard and backend) is at 2.x, **SavahLive** (the Android app) at 3.x. Entries up to 1.11.6 were released together.
+
+## SavahBot 2.0.0
+
+The dashboard and backend now have their own version number, separate from the Android app.
+- Shorter, plainer text throughout (see 1.11.6) and a handoff section in `PROGRESS.md`.
+- A new README with downloads, a comparison of SavahBot and SavahLive, diagrams and a docs map.
+- `scripts/bump_version.py` takes the product: `web` or `app`.
+
+## SavahLive 3.0.0
+
+The Android app now has its own version number (3.0.0, versionCode 30000), separate from SavahBot.
+- Everything from 1.10.0 to 1.11.6: five app themes with slide switching, the dashboard Home, bottom sheets, swipe between tabs, a panel and tab that return where you left them, and real Soft (neumorphic) shadows.
+- The server now tells phones the newest SavahLive version on its own, so an update card never depends on the dashboard version.
+
+## 1.11.6
+
+### Polish
+- Shorter, plainer helper text across the web app and the Android app: the longer explanations on settings, security, backup, Knowledge, SavahLive and the panel screens were cut down to what you need to act. No behaviour changed.
+
 ## 1.11.5
 
 ### Fixed (Android): the build from 1.10.4 on did not compile

@@ -5,7 +5,7 @@ SavahLive is the lightweight native Android companion for SavahBot. It is writte
 - **Package:** `com.savahbot.live`
 - **Minimum Android version:** Android 8.0 (API 26)
 - **Compile / target SDK:** API 34
-- **Current app version:** 1.5.0 (versionCode 10500)
+- **Current app version:** 3.0.0 (versionCode 30000)
 - **Java/Kotlin bytecode target:** Java 17
 - **Build system:** Gradle 8.7 + Android Gradle Plugin 8.5.2
 

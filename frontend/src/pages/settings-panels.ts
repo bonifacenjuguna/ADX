@@ -29,10 +29,10 @@ export function renderAppearance(el: HTMLElement): void {
   const progress = seg<"scroll" | "full" | "off">("Progress line", [{ id: "scroll", label: "Follows scroll" }, { id: "full", label: "Always full" }, { id: "off", label: "Off" }], progressPref(), setProgress).el;
   const motion = h("input", { type: "checkbox", class: "switch", checked: motionPref() === "reduce", "aria-label": "Reduce motion", onchange: (e: Event) => setMotion((e.target as HTMLInputElement).checked ? "reduce" : "system") });
   mount(el, card("sparkle", "Look and feel", body(
-    lede("These are saved on this device only, so your phone and your computer can look different. They never touch the server."),
+    lede("Saved on this device only."),
     row("Theme", "System follows your device's light or dark setting.", theme), row("Accent colour", "Buttons, links and highlights.", swatches),
     row("Density", "Compact fits more on screen.", density), row("Text size", "Makes everything bigger, not just the text.", text),
-    row("Progress line", "The thin line along the top of the screen. It can follow how far you have scrolled, stay full with no movement, or be hidden.", progress),
+    row("Progress line", "The thin line at the top of the screen.", progress),
     row("Reduce motion", "Also on automatically if your device asks for it.", motion)), ),
     toastCard(), layoutsCard());
 }
@@ -92,7 +92,7 @@ function layoutsCard(): HTMLElement {
     };
     const imp = h("button", { class: "btn", type: "button", onclick: () => file.click() }, icon("upload", 15), "Import layouts");
     mount(host,
-      lede("Drag cards into the order you like with Edit layout at the top of Desk, Moderation, Insights, Notifications and Weather. Phones and tablets keep their own arrangement, separate from your computer's. Layouts are saved on the server."),
+      lede("Use Edit layout at the top of a page to reorder its cards. Phones, tablets and computers keep separate layouts."),
       h("strong", { class: "small" }, "Pages"), h("div", null, pageRows),
       h("strong", { class: "small" }, "Which layout"), h("div", null, kindRows),
       h("p", { class: "muted small", role: "status" }, summary),
@@ -113,7 +113,7 @@ function toastCard(): HTMLElement {
     onchange: (e: Event) => { setToastSecs(Number((e.target as HTMLInputElement).value)); toast("Notices will stay this long"); } });
   const sample = h("button", { class: "btn small", type: "button", onclick: () => { toast("This is a notice. Swipe it left or right to dismiss."); toast("This is what an error looks like.", "error"); } }, "Show a sample");
   return card("bell", "Pop-up notices", body(
-    lede("The small messages that slide in over the page. Saved on this device only. Swipe one left or right, or tap it, to dismiss it."),
+    lede("Short messages that slide in over the page. Swipe or tap one to dismiss it."),
     row("Show", "Errors only hides \"Saved\" and \"Copied\" but still tells you when something fails. Off hides every pop-up.", mode),
     row("Position", "Put them at the top if the bottom is in your way.", pos),
     row("Stay for", "Errors stay twice as long.", h("div", { class: "row", style: "gap:8px;align-items:center;min-width:170px" }, slider, label)),
@@ -180,7 +180,7 @@ function firebaseCard(cfg: PushConfig): HTMLElement {
   const check = h("button", { class: "btn small", type: "button", disabled: !cfg.push_ready }, icon("shield", 15), "Check the service account") as HTMLButtonElement;
   check.onclick = () => busy(check, async () => { const r = await post<{ ok: boolean; problems: string[] }>("/api/notify/check"); toast(r.ok ? "Google accepted the service account." : r.problems[0], r.ok ? "ok" : "error"); });
   return card("checklist", "Firebase setup (push)", h("div", { class: "k-stack", style: "padding:12px 14px" },
-    lede(cfg.push_ready && cfg.web_ready ? "Everything needed is set. Use the check to confirm Google accepts the service account." : "Set these variables on your host (Railway), then redeploy. docs/NOTIFICATIONS.md walks through where each one comes from."),
+    lede(cfg.push_ready && cfg.web_ready ? "Everything needed is set. Use the check to confirm Google accepts the service account." : "Set these on your host, then redeploy. See docs/NOTIFICATIONS.md."),
     h("div", { class: "n-checks" }, cfg.checklist.map((c) => h("span", { class: `chip ${c.set ? "ok" : "warn"}` }, statusIcon(c.set ? "ok" : "warn", 15), c.name))),
     h("div", { class: "row" }, check)), { flush: true });
 }

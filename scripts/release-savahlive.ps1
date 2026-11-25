@@ -7,7 +7,7 @@
   Needs: android\keystore.properties (see android\README.md), the Android SDK (ANDROID_HOME), and the Gradle wrapper in android\.
   Steps: read versionName -> refuse if that release already exists -> gradlew clean assembleRelease -> check the signature with apksigner
          -> copy the APK to releases\savahlive\<version>\SavahLive-<version>.apk -> write SHA256SUMS and RELEASE.md -> make them read-only.
-  Then it prints the git commands. To release again, raise the version first:  python scripts\bump_version.py 1.5.1
+  Then it prints the git commands. To release again, raise the version first:  python scripts\bump_version.py app 3.0.1
 #>
 $ErrorActionPreference = 'Stop'
 
@@ -75,7 +75,7 @@ $utf8 = New-Object System.Text.UTF8Encoding($false)
 
 $notes = ''
 $changelog = Get-Content (Join-Path $repo 'CHANGELOG.md') -Raw
-$pattern = '(?ms)^## ' + [regex]::Escape($version) + '\s*\r?\n(.*?)(?=^## |\z)'
+$pattern = '(?ms)^## (?:SavahLive )?' + [regex]::Escape($version) + '[^\r\n]*\r?\n(.*?)(?=^## |\z)'
 if ($changelog -match $pattern) { $notes = $Matches[1].Trim() } else { $notes = '(No CHANGELOG.md section was found for this version.)' }
 $commit = (git -C $repo rev-parse --short HEAD)
 $date = (Get-Date).ToUniversalTime().ToString('yyyy-MM-dd HH:mm') + ' UTC'

@@ -59,7 +59,7 @@ function renderEnvSettings(host: HTMLElement, query: URLSearchParams): void {
     changedOnly.onchange = draw;
     search.value = query.get("q") ?? "";
     mount(host, card("sliders", "All environment settings", h("div", { class: "k-stack" },
-      h("p", { class: "muted small" }, "Changes made here apply immediately and override the environment until you reset them. Secrets are never shown."),
+      h("p", { class: "muted small" }, "Changes apply immediately and override the environment until reset. Secrets are never shown."),
       h("div", { class: "row between", style: "margin-bottom:6px" },
         h("div", { class: "input-icon", style: "flex:1 1 280px;max-width:420px" }, icon("search", 16), search),
         h("label", { class: "check small" }, changedOnly, "Changed from default only"), summary),
@@ -86,7 +86,7 @@ export const settings: Page = {
     const shell = (title: string, blurb: string) => mount(root, pageHead("sliders", title, blurb), areaNav("settings"), settingsSearch(host), h("div", { class: "tab-row" }, views.el), host);
     const fail = (e: unknown) => mount(host, empty("alert", e instanceof Error ? e.message : "This section could not load."));
     if (tab === "knowledge") {
-      shell("Intelligence", "How the bot spots spam, scams and abuse: what it knows (packs of patterns), the detectors that read them, what it learns from you, and live threat lists.");
+      shell("Intelligence", "How the bot spots spam, scams and abuse.");
       return renderKnowledge(host, query);
     }
     if (tab === "appearance") { shell("Appearance", "How the dashboard looks on this device."); renderAppearance(host); return undefined; }

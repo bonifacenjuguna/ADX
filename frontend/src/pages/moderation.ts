@@ -45,7 +45,7 @@ export const moderation: Page = {
             b.onclick = () => busy(b as HTMLButtonElement, async () => { await post("/api/moderation/level", { level: l.id }); await drawLevels(); }, `${l.label} level applied`);
             return b;
           })),
-          h("p", { class: "muted small" }, d.current === "custom" ? "Custom: you changed some thresholds yourself. Pick a level to reset them to a ready-made set. Word lists and exemptions are never touched." : "Levels change only the score thresholds, strikes and which actions may run by themselves. Your word lists and exemptions stay as they are."));
+          h("p", { class: "muted small" }, d.current === "custom" ? "Custom: you changed some thresholds. Pick a level to reset them. Word lists and exemptions are kept." : "Levels change thresholds, strikes and automatic actions. Word lists and exemptions are kept."));
       } catch { mount(levelBox, ""); }
     };
     void drawLevels();

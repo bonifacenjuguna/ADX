@@ -1,4 +1,4 @@
-# SavahLive (1.5.0)
+# SavahLive (3.0.0)
 
 SavahLive is a small native Android app that floats your livestream's **viewers, likes and chat** above any other app (PUBG Mobile, for example).
 **SavahBot does the work, SavahLive displays the results.** The phone never talks to YouTube, never moderates and has no dashboard: it only shows what this backend already produced.

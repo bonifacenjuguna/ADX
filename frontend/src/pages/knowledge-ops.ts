@@ -13,7 +13,7 @@ export function renderDetectors(host: HTMLElement): void {
   const load = async () => {
     const { detectors } = await get<{ detectors: Detector[] }>("/api/knowledge/detectors");
     mount(host,
-      lede("Detectors are the readers. Each one looks for one kind of trouble in the packs and in the message. Choose Off, Shadow (watch and record, never score) or Live, and how strongly it counts."),
+      lede("Each detector looks for one kind of trouble. Set Off, Shadow (record only) or Live, and how strongly it counts."),
       h("div", { class: "k-grid two" }, detectors.map(detector)),
       h("p", { class: "k-note" }, `${MODE_HELP.shadow} ${MODE_HELP.live} Everything the intelligence layer adds is capped, so on its own it can never ban anyone.`));
   };
@@ -76,7 +76,7 @@ export function renderFeeds(host: HTMLElement): void {
     const fmt = h("select", { "aria-label": "Format" }, [["domains", "One domain per line"], ["hosts", "Hosts file (0.0.0.0 domain)"], ["urls", "One web address per line"], ["phrases", "One spam phrase per line"]].map(([v, l]) => h("option", { value: v }, l))) as HTMLSelectElement;
     const btn = h("button", { class: "btn primary", type: "button" }, icon("plus", 16), "Add feed") as HTMLButtonElement;
     btn.onclick = () => busy(btn, async () => { await post("/api/knowledge/feeds", { title: title.value, url: url.value, format: fmt.value }); title.value = ""; url.value = ""; toast("Added. Press Refresh now to load it."); await reload(); });
-    return kcard("plus", "Add a list of your own", h("div", { class: "k-add" }, h("p", { class: "k-note" }, "Any public list on the web in a plain-text format. Only addresses on the public internet are accepted, and redirects are not followed."),
+    return kcard("plus", "Add a list of your own", h("div", { class: "k-add" }, h("p", { class: "k-note" }, "Any public plain-text list. Only public addresses are accepted."),
       h("label", { class: "field" }, "Name", title), h("label", { class: "field" }, "Address", url), h("label", { class: "field" }, "Format", fmt), h("div", { class: "row" }, btn)));
   };
 
@@ -85,11 +85,11 @@ export function renderFeeds(host: HTMLElement): void {
     const auto = h("input", { type: "checkbox", class: "switch", checked: s.auto, "aria-label": "Refresh automatically" }) as HTMLInputElement;
     auto.onchange = async () => { try { await patch("/api/settings", { values: { intel_feeds_enabled: auto.checked } }); toast(auto.checked ? "Automatic refresh on" : "Automatic refresh off"); } catch (e) { auto.checked = !auto.checked; fail(e); } };
     mount(host,
-      lede("Public lists of known phishing and malware websites, fetched by your bot's own server and kept up to date. A link to a listed site scores as a threat. Well-known sites can never be added, a download that fails or suddenly shrinks is refused, and every refresh can be rolled back."),
+      lede("Public lists of known phishing and malware sites, kept up to date by your bot. A link to a listed site counts as a threat. Every refresh can be rolled back."),
       kcard("radio", "Refreshing", h("div", { class: "k-stack" },
         figures([{ value: `${s.enabled}/${s.total}`, label: "lists on" }, { value: s.entries.toLocaleString(), label: "domains known", tone: s.entries ? "ok" : "" }, { value: ago(s.last_ok), label: "last good refresh", tone: s.errors ? "warn" : "" }]),
         h("div", { class: "row between" }, h("span", { class: "muted" }, "Refresh automatically (about once a day, politely)"), auto),
-        h("p", { class: "k-note" }, "Only the list is downloaded. Nothing about your chat is ever sent. How often is set by “intel_feed_interval_hours” under All settings."))),
+        h("p", { class: "k-note" }, "Only the list is downloaded. Nothing from your chat is sent."))),
       kcard("database", "Lists", h("div", null, data.feeds.map(feedRow)), { flush: true }),
       addCard());
   };

@@ -44,8 +44,8 @@ async function overview(el: HTMLElement): Promise<void> {
     let body: HTMLElement;
     const msg = (t: string) => h("p", { class: "muted small" }, t);
     if (state.kind === "unsupported" || state.kind === "needs-install") body = h("div", { class: "k-stack" }, msg(state.why), h("p", { class: "muted small" }, "docs/PWA_AND_PUSH_PLATFORMS.md lists what each phone and browser can do."));
-    else if (state.kind === "not-configured") body = h("div", { class: "k-stack" }, msg("Push is not set up on the server yet. Add the Firebase values below, redeploy, and this button appears. The in-app bell and Telegram work without it."));
-    else if (state.kind === "blocked") body = msg("Notifications are blocked for this site in your browser. Open the site settings (the lock icon beside the address), allow Notifications, then reload.");
+    else if (state.kind === "not-configured") body = h("div", { class: "k-stack" }, msg("Push is not set up on the server yet. The bell and Telegram work without it."));
+    else if (state.kind === "blocked") body = msg("Notifications are blocked for this site. Allow them in your browser's site settings, then reload.");
     else {
       const on = state.kind === "on";
       const b = h("button", { class: on ? "btn" : "btn primary", type: "button" }, icon(on ? "bellOff" : "bell", 16), on ? "Turn off on this device" : "Turn on push on this device") as HTMLButtonElement;

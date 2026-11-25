@@ -69,7 +69,7 @@ export const bans: Page = {
         } catch (e) { fail(e); }
       });
       mount(rulesBox, h("div", { class: "k-stack" },
-        lede("These rules only ever make the bot gentler. A message that breaks them is still deleted. Escalation steps (how many strikes lead to a timeout or ban, and the timeout ladder) are in Settings under Moderation."),
+        lede("These rules only make the bot gentler. Rule-breaking messages are still deleted. Escalation steps are in Settings, under Moderation."),
         field("Harshest action allowed", level, "Pick “Only delete messages” to stop all timeouts and bans."),
         field("Never time out or ban", never, "Their bad messages are still deleted."),
         field("Cap by trigger", caps, "name:action pairs. The trigger names are shown on each moderation card."),
@@ -88,7 +88,7 @@ export const bans: Page = {
       top,
       h("section", { class: "block fixed-scroll", "data-card": "ledger" }, h("header", null, h("h2", null, icon("list", 18), "Ledger")),
         h("div", { class: "k-stack", style: "padding:12px 14px" }, h("div", { class: "row wrap", style: "gap:10px" }, views.el, search), list,
-          h("p", { class: "muted small" }, "Tap a person to see their profile and why it happened. Only bans made by SavahBot from version 1.2.0 on can be lifted here. Older bans, and bans made in YouTube Studio, must be lifted in YouTube Studio: YouTube gives no way to list them."))),
+          h("p", { class: "muted small" }, "Tap a person to see why. Only bans made by SavahBot (1.2.0 and later) can be lifted here. Other bans must be lifted in YouTube Studio."))),
       h("section", { class: "block", "data-card": "be-gentler" }, h("header", null, h("h2", null, icon("sliders", 18), "Be gentler")), h("div", { style: "padding:12px 14px" }, rulesBox))));
     void load().catch((e) => { fail(e); mount(list, invite("alert", "Could not load the bans", (e as Error).message)); });
   },

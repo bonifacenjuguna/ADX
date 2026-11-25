@@ -507,7 +507,7 @@ class MainActivity : Activity() {
         c.addView(ui.space(14))
         c.addView(ui.text("Let SavahLive float", 24f, Ui.INK, true))
         c.addView(ui.space(8))
-        c.addView(ui.text("To sit above your game, Android needs one switch turned on for SavahLive: “Display over other apps”.", 15f, Ui.MUTED))
+        c.addView(ui.text("Turn on “Display over other apps” for SavahLive so it can sit above your game.", 15f, Ui.MUTED))
         c.addView(ui.space(12))
         c.addView(ui.numberedStep(1, "Tap the button. Android opens a settings page."))
         c.addView(ui.numberedStep(2, "Find SavahLive and turn the switch on."))
@@ -616,7 +616,7 @@ class MainActivity : Activity() {
         group(col,
             tip(R.drawable.ic_move, "Move it", "Drag the top row, where the viewers and likes are."),
             tip(R.drawable.ic_expand, "Resize it", "Drag any edge or corner, or tap the expand button for a big window."),
-            tip(R.drawable.ic_dock, "Tuck it away", "Tap the tuck button. It becomes a small tab on the side you chose in Look, under Tab. Tap the tab to open the panel, or drag it to another edge."),
+            tip(R.drawable.ic_dock, "Tuck it away", "Tuck the panel into a small tab. Tap the tab to open it, or drag it to another edge."),
             tip(R.drawable.ic_pin, "It remembers", "The panel reopens exactly where you last left it, in portrait and in landscape.")
         )
     }
@@ -627,7 +627,7 @@ class MainActivity : Activity() {
 
         sectionLabel(col, "Panel", "The window with the chat.")
         group(col,
-            toggleRow(R.drawable.ic_layers, "Glass look", "Frosted, see-through surfaces with a soft sheen and a light edge, on the panel, tab and chat pop-outs.", store.glass) {
+            toggleRow(R.drawable.ic_layers, "Glass look", "Frosted, see-through panel, tab and pop-outs.", store.glass) {
                 store.glass = it
                 preview?.refresh()
             },
@@ -644,10 +644,10 @@ class MainActivity : Activity() {
 
         sectionLabel(col, "Tab", "The small box on the screen edge. It is the same size on every edge.")
         group(col,
-            toggleRow(R.drawable.ic_expand, "Open next to the tab", "The first time, the panel opens at the edge and height where the tab is, not in the middle. After you move, resize or tuck it, it always reopens exactly where you left it.", store.openNearTab) {
+            toggleRow(R.drawable.ic_expand, "Open next to the tab", "It reopens exactly where you left it.", store.openNearTab) {
                 store.openNearTab = it
             },
-            choiceRow(Icons.tuck(store.tuckTo), "Tuck to", "Where the tab appears when you tap the panel's tuck button. Where it was: back exactly where you last dragged the tab. Nearest picks the closest edge.", listOf(Pair("Where it was", 5), Pair("Right", 1), Pair("Left", 0), Pair("Top", 2), Pair("Bottom", 3), Pair("Nearest", 4)), store.tuckTo) {
+            choiceRow(Icons.tuck(store.tuckTo), "Tuck to", "Where the tab appears when you tuck the panel.", listOf(Pair("Where it was", 5), Pair("Right", 1), Pair("Left", 0), Pair("Top", 2), Pair("Bottom", 3), Pair("Nearest", 4)), store.tuckTo) {
                 store.tuckTo = it
                 if (it in 0..3) pvEdge = it          // the preview shows the tab on that side
                 preview?.focus(1)
@@ -661,7 +661,7 @@ class MainActivity : Activity() {
 
         sectionLabel(col, "Chat pop-outs", "New messages that slide out beside the tab.")
         group(col,
-            choiceRow(R.drawable.ic_clock, "Time on screen", "How long each message stays. When many arrive they wait their turn, one at a time, a little faster the longer the queue. Auto uses what SavahBot asks for.", listOf(Pair("Auto", 0), Pair("2 s", 2), Pair("4 s", 4), Pair("6 s", 6), Pair("8 s", 8), Pair("12 s", 12)), store.popSeconds) {
+            choiceRow(R.drawable.ic_clock, "Time on screen", "How long each message stays. Auto uses what SavahBot asks for.", listOf(Pair("Auto", 0), Pair("2 s", 2), Pair("4 s", 4), Pair("6 s", 6), Pair("8 s", 8), Pair("12 s", 12)), store.popSeconds) {
                 store.popSeconds = it
                 preview?.focus(1)
             },
@@ -681,10 +681,10 @@ class MainActivity : Activity() {
 
         sectionLabel(col, "Moving things")
         group(col,
-            toggleRow(R.drawable.ic_move, "Hold to move", "Press and hold the tab, or the panel's top row, until it lifts and glows, then drag. A quick swipe never moves it, so the phone's swipe-up and back gestures stay yours.", store.holdToMove) { store.holdToMove = it }
+            toggleRow(R.drawable.ic_move, "Hold to move", "Press and hold the tab, or the panel's top row, then drag.", store.holdToMove) { store.holdToMove = it }
         )
 
-        sectionLabel(col, "Saved looks", "Keep a layout and theme, for example one for PUBG in landscape. The notification can switch to the next one.")
+        sectionLabel(col, "Saved looks", "Save a layout and theme, for example one for landscape games.")
         val rows = ArrayList<View>()
         val saved = Presets.list(store)
         if (saved.isEmpty()) {
@@ -722,7 +722,7 @@ class MainActivity : Activity() {
         group(col, *rows.toTypedArray(), inset = 0)
 
         sectionLabel(col, "Start over")
-        val resetLook = ui.head(R.drawable.ic_palette, "Reset look", "Theme, glass, opacity, text size, pop-out settings and slide away go back to how they started. Your saved looks stay.", ui.pill("Reset") {
+        val resetLook = ui.head(R.drawable.ic_palette, "Reset look", "Resets the look. Your saved looks are kept.", ui.pill("Reset") {
             store.themeId = 0
             store.customHue = 210
             store.customLight = 18
@@ -755,7 +755,7 @@ class MainActivity : Activity() {
 
     private fun chatTab(col: LinearLayout) {
         pageTitle(col, "Chat", "What you can do with chat from the panel.")
-        sectionLabel(col, "Talk to your chat", "Sending, hiding and timing people out need permission in SavahBot: Manage, SavahLive, then this phone.")
+        sectionLabel(col, "Talk to your chat", "Needs permission in SavahBot: Manage, SavahLive, then this phone.")
         group(col,
             toggleRow(R.drawable.ic_send, "Show the message box", "Type to your chat from the panel.", store.sendEnabled) { store.sendEnabled = it }
         )
@@ -779,7 +779,7 @@ class MainActivity : Activity() {
 
         sectionLabel(col, "Automatic")
         group(col,
-            toggleRow(R.drawable.ic_bell, "Controls in notifications", "On: the notification stays, so you can start the overlay without opening the app. Off: it shows only while the overlay is open. (The notification's own Off button just hides it until you use the overlay again.)", store.controlsAlways) {
+            toggleRow(R.drawable.ic_bell, "Controls in notifications", "On keeps the notification so you can start the overlay without opening the app. Off shows it only while the overlay is open.", store.controlsAlways) {
                 store.controlsAlways = it
                 Controls.refreshIdle(this, true)
             },
@@ -1508,7 +1508,7 @@ class MainActivity : Activity() {
     }
 
     // ---- cards on Home --------------------------------------------------------------------------------------------------------------------
-    /** SavahBot keeps the app and itself on the same version number, so a higher number there means a newer app exists. */
+    /** SavahBot tells the app the newest SavahLive version, so a higher number there means a newer app exists. */
     private fun updateCard(col: LinearLayout) {
         if (!store.updateCheck) return
         val info = try {
@@ -1609,7 +1609,7 @@ class MainActivity : Activity() {
         if (pairing) return
         val server = Pairing.normalizeServer(input.server ?: typedServer, BuildConfig.DEBUG)
         if (server == null) {
-            message = "Add the SavahBot address (it starts with https://). It is in the pairing link, or on the pairing page."
+            message = "Enter the SavahBot address (https://…) from the pairing link."
             messageIsError = true
             showServer = true
             render()

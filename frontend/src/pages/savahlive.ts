@@ -142,7 +142,7 @@ export const savahlive: Page = {
       mount(heroBox, h("section", { class: "sl-hero" },
         h("div", { class: "sl-hero-top" },
           h("div", { class: "sl-mark", "aria-hidden": "true" }, icon("smartphone", 28)),
-          h("div", null, h("h1", null, "Savah", h("b", null, "Live")), h("p", null, "Float your stream's chat, viewers and likes over any game on your Android phone. Pair once, then it just works."))),
+          h("div", null, h("h1", null, "Savah", h("b", null, "Live")), h("p", null, "Show your stream's chat, viewers and likes over any game on your Android phone."))),
         actions,
         h("div", { class: "sl-stats" },
           stat("Paired", String(o.devices.length)),
@@ -283,7 +283,7 @@ export const savahlive: Page = {
             optRow("Hide bot messages", "Leaves out other bots and SavahBot's own replies.", switchEl(d.hide_bots, "Hide bot messages", (v) => { d.hide_bots = v; markDirty(); })),
             optRow("Hide flagged messages", "Leaves out messages moderation flagged or removed.", switchEl(d.hide_flagged, "Hide flagged messages", (v) => { d.hide_flagged = v; markDirty(); })),
             optRow("Members and moderators only", "Useful during a raid: only members, regulars, moderators and you.", switchEl(d.only_special, "Members and moderators only", (v) => { d.only_special = v; markDirty(); })),
-            optRow("Let phones moderate chat", "Each phone also needs its own switch below. Off by default. A phone can hide a message or time someone out for 5 minutes; bans stay on this dashboard.", switchEl(d.mod_enabled, "Let phones moderate chat", (v) => { d.mod_enabled = v; markDirty(); })),
+            optRow("Let phones moderate chat", "Each phone needs its own switch below. A phone can hide a message or time someone out for 5 minutes. Bans stay here.", switchEl(d.mod_enabled, "Let phones moderate chat", (v) => { d.mod_enabled = v; markDirty(); })),
             optRow("Let phones send chat", "Each phone also needs its own switch below. Messages go out as SavahBot's own YouTube account.", switchEl(d.send_enabled, "Let phones send chat", (v) => { d.send_enabled = v; markDirty(); })),
             optRow("Track viewers and likes", `Reads them from YouTube about every ${o.stats_seconds} seconds (about 1 quota unit each time). Off means chat only.`, switchEl(d.track_stats, "Track viewers and likes", (v) => { d.track_stats = v; markDirty(); }))),
           h("div", null,
@@ -313,7 +313,7 @@ export const savahlive: Page = {
               h("span", { class: "sl-pv-btns" }, h("i", null, icon("expand", 14)), h("i", null, icon("dock", 14)))),
             h("div", { class: "sl-pv-chat" }, sample.map((l) => h("div", { class: `sl-pv-line${visible(l.kind) ? "" : " gone"}` }, h("b", { style: `color:${l.color}` }, l.name), l.text))),
             d.send_enabled ? h("div", { class: "sl-pv-send" }, h("span", null, "Message chat"), h("i", null, icon("send", 14))) : null),
-          h("small", { class: "muted" }, "Each phone chooses its own theme, see-through levels, text and pop-out sizes, and whether the tab slides away, in the SavahLive app."))));
+          h("small", { class: "muted" }, "Each phone sets its own look in the SavahLive app."))));
     }
 
     function drawConnection(): void {

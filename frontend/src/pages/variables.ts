@@ -52,7 +52,7 @@ async function render(body: HTMLElement): Promise<void> {
       h("button", { class: "btn ghost small", type: "button", "aria-label": `Delete ${v.name}`, onclick: () => void remove(v) }, icon("trash", 15)))));
   mount(body,
     h("div", { class: "sp-card" }, h("div", { class: "row between" }, h("h3", null, "Your variables"), h("button", { class: "btn small primary", type: "button", onclick: () => editor(null, names, reload) }, icon("plus", 15), "New")),
-      h("p", { class: "muted small" }, "Type $(Name) in a command, timer, auto reply or a message you send as the bot, and it is replaced by the value. Change it here once and everything follows."),
+      h("p", { class: "muted small" }, "Type $(Name) in a command, timer or message and it is replaced by the value."),
       rows.length ? h("div", null, ...rows) : empty("sparkle", "No variables yet. Try one called TikTok with your link.")),
     h("div", { class: "sp-card" }, h("h3", null, "Built in, so not available as names"),
       h("p", { class: "muted small" }, "These already do something, so a variable cannot use their name."),

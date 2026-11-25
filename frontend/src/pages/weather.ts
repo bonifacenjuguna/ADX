@@ -132,7 +132,7 @@ export const weather: Page = {
         if (!o.location) {
           const prefs = await get<Prefs>("/api/weather/prefs");
           mount(root, h("div", { class: "page" }, areaNav("weather"), pageHead("cloudSun", "Weather", "Add a place to see its weather."),
-            invite("mapPin", "Which place?", "Search for a town, or use this device's location if you like. SavahBot never asks for your location on its own.", null),
+            invite("mapPin", "Which place?", "Search for a town, or use this device's location.", null),
             card("search", "Add a place", h("div", { style: "padding:12px 14px" }, placePicker(() => void load(false), prefs.offer_device_location)), { flush: true })));
           return;
         }

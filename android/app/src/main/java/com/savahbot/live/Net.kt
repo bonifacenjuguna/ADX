@@ -79,7 +79,7 @@ object Net {
             val expires = if (j.isNull("expires")) 0L else (j.getDouble("expires") * 1000).toLong()
             return PairResult(key, j.optString("name", deviceName()), expires)
         } catch (e: JSONException) {
-            throw PairError("SavahBot sent an answer this app does not understand. Update SavahLive and SavahBot to the same version.")
+            throw PairError("SavahBot sent an answer this app does not understand. Update SavahLive and SavahBot.")
         }
     }
 

@@ -140,9 +140,9 @@ class SavahLive:
         return {**self.overlay_settings(), "can_send": self.may_send(row), "can_mod": self.may_moderate(row)}
 
     def update_info(self) -> dict[str, Any]:
-        """What the app needs to say "a newer version exists": the server's own version (kept equal to the app's by the release script) and the download link."""
-        from . import __version__
-        return {"version": __version__, "url": str(self.cfg.get("savahlive_download_url") or "")}
+        """What the app needs to say "a newer version exists": the newest SavahLive version (set by the release script, separate from SavahBot's own) and the download link."""
+        from . import __savahlive_version__
+        return {"version": __savahlive_version__, "url": str(self.cfg.get("savahlive_download_url") or "")}
 
     # ------------------------------------------------------------------ pairing
     async def new_code(self, expiry_days: int = 0) -> dict[str, Any]:

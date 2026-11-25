@@ -1,3 +1,18 @@
+# Handoff (project paused)
+
+**State.** Web app, backend and the SavahLive Android app are working. The two products now have separate versions: SavahBot (dashboard + backend) 2.0.0 and SavahLive (Android) 3.0.0. The last Android build the owner confirmed on a phone was 1.11.5 (themes, dashboard Home, panel and tab memory). Not built, by choice: bot starter and backup data, and socials.
+
+**Build the Android app.** From the `android` folder: `gradle clean assembleDebug`. The APK is `app/build/outputs/apk/debug/app-debug.apk`. Afterwards check that the footer in Settings shows the version you expect.
+
+**Release.** `python3 scripts/bump_version.py web X.Y.Z` (SavahBot) or `... app X.Y.Z` (SavahLive); `--check` verifies and `--show` prints both. Add a `## SavahBot X.Y.Z` or `## SavahLive X.Y.Z` entry at the top of CHANGELOG.md, commit, and redeploy. `python3 scripts/pack_android.py` refreshes the Android-only zip linked from the README. Signed releases: `docs/RELEASING.md`.
+
+**Traps we hit.**
+- A Kotlin compile error leaves the previous APK in place. The phone keeps running the old version and nothing seems to change. Always check the version in the app after installing.
+- The tab's saved place is per orientation. "Tuck to" uses the key `tuckMode` (5 means back to where the tab was last dragged).
+- Web changes only show after a redeploy.
+
+**Known.** Some backend tests fail in this sandbox (a database NOT NULL constraint on `mod_actions.ts`); they were already failing and are unrelated to the interface. Run the backend suite on a real install before relying on it.
+
 
 ## CP14 review fixes
 Independent review found 10 issues; fixed: push with bell off, bare-404 deleting devices, weather cooldown/signature/unmonitored place/staleness, re-register keeping disabled state, per-row delivery guard, summary leaking sensitive titles, null forecast crash, 0,0 location.

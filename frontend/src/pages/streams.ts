@@ -125,7 +125,7 @@ export function openStreams(opts: Opts): { close: () => void } {
   const listBox = h("div", { class: "st-list" });
   const home = () => {
     mount(root, h("div", { class: "input-icon" }, icon("search", 16), search),
-      h("p", { class: "muted small st-note" }, "Every stream is its own chat. Going live again never continues an old one, so each stream's lines, numbers and actions stay together here."),
+      h("p", { class: "muted small st-note" }, "Each stream keeps its own chat, numbers and actions."),
       listBox);
     list();
   };
