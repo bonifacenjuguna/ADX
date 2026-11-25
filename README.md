@@ -301,14 +301,15 @@ This project has meaningful automated coverage, but **a passing test suite is no
 For the full test inventory and commands, see [docs/TESTING.md](docs/TESTING.md). For deployment checks, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ---
+
 <div align="center">
-<sub>## Project status
 
-**SavahBot 2.0.0 is the completed project release.** This repository is being preserved as the finished public record of the work. No further feature development is planned.
+## SavahBot 2.0.0
 
-SavahBot (dashboard and backend) and SavahLive (Android companion) retain separate version numbers and release histories. The documented limitations and verification gaps above remain part of the project record.
+**Explainable moderation, thoughtful tools, and a clearer view of your live chat.**
 
----
+SavahBot brings the dashboard and backend together, while SavahLive 3.0.0 extends the experience to Android. Each product keeps its own version number and release history.
 
-Made for one streamer's chat, kept simple on purpose. · <a href="#downloads">Back to the top</a></sub>
+<sub>Made for one streamer's chat, kept simple on purpose. · <a href="#downloads">Back to the top</a></sub>
+
 </div>
