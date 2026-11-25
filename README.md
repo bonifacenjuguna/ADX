@@ -302,5 +302,13 @@ For the full test inventory and commands, see [docs/TESTING.md](docs/TESTING.md)
 
 ---
 <div align="center">
-<sub>Made for one streamer's chat, kept simple on purpose. · <a href="#downloads">Back to the top</a></sub>
+<sub>## Project status
+
+**SavahBot 2.0.0 is the completed project release.** This repository is being preserved as the finished public record of the work. No further feature development is planned.
+
+SavahBot (dashboard and backend) and SavahLive (Android companion) retain separate version numbers and release histories. The documented limitations and verification gaps above remain part of the project record.
+
+---
+
+Made for one streamer's chat, kept simple on purpose. · <a href="#downloads">Back to the top</a></sub>
 </div>
