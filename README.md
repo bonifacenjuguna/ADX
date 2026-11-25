@@ -13,7 +13,7 @@
 <a href="#downloads"><img height="28" alt="SavahBot version" src="https://img.shields.io/badge/SavahBot-2.0.0-7d95ff?style=for-the-badge"></a> <a href="#downloads"><img height="28" alt="SavahLive version" src="https://img.shields.io/badge/SavahLive-3.0.0-e5242b?style=for-the-badge&logo=android&logoColor=white"></a> <img height="28" alt="Owner only" src="https://img.shields.io/badge/access-owner%20only-3ccf93?style=for-the-badge"> <img height="28" alt="No AI" src="https://img.shields.io/badge/moderation-explainable%20%C2%B7%20no%20AI-f0b34a?style=for-the-badge"> <img height="28" alt="Python" src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white&style=for-the-badge"> <img height="28" alt="Starlette" src="https://img.shields.io/badge/Starlette-111827?style=for-the-badge"> <img height="28" alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=for-the-badge"> <img height="28" alt="Vite" src="https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white&style=for-the-badge"> <img height="28" alt="Kotlin" src="https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white&style=for-the-badge"> <img height="28" alt="Android" src="https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=black&style=for-the-badge"> <img height="28" alt="Gradle" src="https://img.shields.io/badge/Gradle-02303A?logo=gradle&logoColor=white&style=for-the-badge"> <img height="28" alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white&style=for-the-badge"> <img height="28" alt="SQLite" src="https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white&style=for-the-badge"> <img height="28" alt="Redis" src="https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white&style=for-the-badge"> <img height="28" alt="Railway" src="https://img.shields.io/badge/Railway-0B0D0E?logo=railway&logoColor=white&style=for-the-badge"> <img height="28" alt="Vercel" src="https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white&style=for-the-badge"> <img height="28" alt="Firebase" src="https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black&style=for-the-badge"> <img height="28" alt="Telegram" src="https://img.shields.io/badge/Telegram-26A5E4?logo=telegram&logoColor=white&style=for-the-badge"> <img height="28" alt="YouTube" src="https://img.shields.io/badge/YouTube-FF0000?logo=youtube&logoColor=white&style=for-the-badge"> <img height="28" alt="GitHub Actions" src="https://img.shields.io/badge/GitHub%20Actions-2088FF?logo=githubactions&logoColor=white&style=for-the-badge"> <img height="28" alt="PWA" src="https://img.shields.io/badge/PWA-5A0FC8?logo=pwa&logoColor=white&style=for-the-badge">
 </p>
 
-**[Downloads](#downloads)** &nbsp;·&nbsp; **[Two products](#two-products-one-repo)** &nbsp;·&nbsp; **[Screenshots](#a-look-around)** &nbsp;·&nbsp; **[How it fits](#how-it-fits-together)** &nbsp;·&nbsp; **[Quick start](#quick-start)** &nbsp;·&nbsp; **[Docs](#documentation)**
+**[Downloads](#downloads)** &nbsp;·&nbsp; **[Two products](#two-products-one-repo)** &nbsp;·&nbsp; **[Screenshots](#a-look-around)** &nbsp;·&nbsp; **[How it fits](#how-it-fits-together)** &nbsp;·&nbsp; **[Quick start](#quick-start)** &nbsp;·&nbsp; **[Project insights](#project-insights)** &nbsp;·&nbsp; **[Docs](#documentation)**
 
 </div>
 
@@ -227,40 +227,80 @@ Versions only go up, because Android refuses to install an older build over a ne
 
 ---
 
-## Good to know
+## Project insights
+
+A practical overview of how SavahBot is deployed, how access is protected, how its two products evolve, and where testing still has limits.
 
 <details>
-<summary><b>The app says "You have 3.0.0" but I built a newer one</b></summary>
+<summary><b>01 · Deployment & infrastructure</b></summary>
 
-The footer shows the version that was actually installed. A build that fails to compile leaves the previous APK in place, so the phone keeps running the old version. Run `gradle clean assembleDebug`, confirm `BUILD SUCCESSFUL`, and install `app-debug.apk` from that build.
+- **Backend — Railway:** runs the Python API and connects to PostgreSQL. SQLite is available for local development.
+- **Dashboard — Vercel:** serves the TypeScript/Vite web app and communicates with the backend.
+- **SavahLive — Android:** a native Kotlin app that connects to the SavahBot API for its overlay feed.
+
+Backend and dashboard deployments are separate: changing one does not automatically publish the other. See [the deployment guide](docs/DEPLOYMENT.md) for setup steps and environment variables.
+
 </details>
 
 <details>
-<summary><b>I changed the web app but the site looks the same</b></summary>
+<summary><b>02 · Security & privacy</b></summary>
 
-Web changes only show after a redeploy on Vercel. Backend changes need a redeploy on Railway.
+SavahBot is designed for one owner. Dashboard sign-in supports a password, passkeys, authenticator codes and recovery codes. Once a second method is configured, sign-in requires any two different methods.
+
+SavahLive does **not** receive your YouTube credentials and does not connect to YouTube. Each paired phone receives its own device key, protected on the phone with Android Keystore; the server stores a hash of that key. The key is limited to the overlay feed and related device operations.
+
+A paired phone can display live chat. Review pairing alerts and remove devices you no longer use. See the [security guide](docs/SECURITY.md) and [SavahLive guide](docs/SAVAHLIVE.md).
+
 </details>
 
 <details>
-<summary><b>Why do SavahBot and SavahLive have different version numbers?</b></summary>
+<summary><b>03 · Versioning & updates</b></summary>
 
-They are released separately. A dashboard fix should not force a new APK, and an app fix should not force a redeploy. The server tells phones the newest SavahLive version on its own, so the update card in the app never depends on the dashboard version.
+SavahBot and SavahLive have independent version numbers because they are released separately. Dashboard/backend changes follow the web release process; Android changes are built and published as a separate SavahLive release.
+
+A web deployment does not require a new APK, and an APK update does not require a web deployment. See [the release guide](docs/RELEASING.md).
+
 </details>
 
 <details>
-<summary><b>Does the phone see my YouTube account?</b></summary>
+<summary><b>04 · Testing & verification</b></summary>
 
-No. The phone only talks to your SavahBot, with a device key that opens one door: the overlay feed. Pairing alerts you on Telegram, and any phone can be removed in one tap.
+Automated tests check application logic and simulated integrations. They do not prove that every live provider, browser prompt, device or production deployment works.
+
+The [testing guide](docs/TESTING.md) lists automated coverage, known gaps and manual checks. The verification summary below separates those categories.
+
 </details>
 
 ---
 
 ## What is and is not verified
 
-Automated tests use fakes, never the real YouTube, Firebase or Open-Meteo, and cannot exercise real browsers, phones, hardware passkeys or PostgreSQL. The list and a manual checklist are in docs/TESTING.md. Expect to fix small things on the first real run; Settings > Developer and the logs are designed to make them easy to find.
+This project has meaningful automated coverage, but **a passing test suite is not the same as a fully verified production system**.
+
+| Area | Automated or documented coverage | Still needs real-world verification |
+|:--|:--|:--|
+| **Backend logic** | Unit and HTTP-level tests cover notifications, weather handling, security flows, backup/restore, history, bans and moderation knowledge. | Behaviour under actual production traffic and configuration. |
+| **External services** | YouTube, Firebase and Open-Meteo are represented by fakes or fixtures in automated tests. | Real YouTube API access, Firebase push delivery and live Open-Meteo responses. |
+| **Authentication** | Password hashing, TOTP, recovery codes and passkey verification are tested, including simulated authenticator flows. | Real browser passkey ceremonies and physical security keys across devices. |
+| **Database** | SQLite is used for local development and automated tests. A PostgreSQL check script is provided. | A live PostgreSQL connection and migration check in the deployed environment. |
+| **Frontend & deployment** | The testing guide documents the TypeScript check and production build commands. | Real browser permissions, deployed Vercel/Railway behaviour and push-token registration. |
+| **Android** | SavahLive has been built and run as a debug build on a real phone, as documented in its guide. | Broad device/Android-version coverage, manufacturer battery restrictions and release signing/install verification. |
+
+### Before relying on a deployment
+
+- [ ] Confirm the backend health endpoint responds successfully.
+- [ ] Run the PostgreSQL check script against the deployed database.
+- [ ] Sign in and test the configured authentication methods.
+- [ ] Enable push notifications and send a real test notification.
+- [ ] Add a weather location and confirm live data loads.
+- [ ] Export a backup and test its import flow.
+- [ ] Pair SavahLive, check the overlay on your phone, then remove the device and confirm access is revoked.
+
+**Important:** the current SavahLive 3.0.0 GitHub release asset is named unsigned.apk. Its published SHA-256 verifies the downloaded file's integrity; it does **not** prove that the APK is signed or safe to install. Do not treat it as an end-user-ready release until signing has been confirmed and a properly signed build is published. See [Downloads](#downloads) and [the release guide](docs/RELEASING.md).
+
+For the full test inventory and commands, see [docs/TESTING.md](docs/TESTING.md). For deployment checks, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ---
-
 <div align="center">
 <sub>Made for one streamer's chat, kept simple on purpose. · <a href="#downloads">Back to the top</a></sub>
 </div>
