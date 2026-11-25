@@ -32,21 +32,47 @@ There is no AI in the loop. Moderation is a set of explainable algorithms, and e
 <!-- EDIT: add a new row at the top of this table for every release (copy the row below and change the version). The link has the form
      releases/savahlive/<version>/SavahLive-<version>.apk?raw=true  (?raw=true makes the browser download the file). -->
 
-| | Version | Released | Download | Check it | Notes |
+| | Version | Released | Download | SHA-256 | Notes |
 |:-:|:--|:--|:--|:--|:--|
-| <img src="branding/savahlive-app-icon.svg" width="34" alt=""> | **SavahLive 3.0.0** | <!-- EDIT --> *add the date* | [**Download APK**](releases/savahlive/3.0.0/SavahLive-3.0.0.apk?raw=true) | [SHA-256](releases/savahlive/3.0.0/SHA256SUMS?raw=true) | [What changed](releases/savahlive/3.0.0/RELEASE.md) |
+| <img src="branding/savahlive-app-icon.svg" width="34" alt=""> | **SavahLive 3.0.0** | **25 Nov 2026** | [**Download release asset**](https://github.com/bonifacenjuguna/SavahBot/releases/download/3.0.0/unsigned.apk) | <code>99dc3ada235c7110d19ebad48d3cf9d3caa47bc9ae1d36aeb80c8fc76eff07b7</code> | [Release notes](https://github.com/bonifacenjuguna/SavahBot/releases/tag/3.0.0) |
 
-<sub>The signed APK appears in `releases/savahlive/<version>/` after you run `scripts/release-savahlive.ps1` and commit the result ([how](docs/RELEASING.md)). Until then the link above has nothing to open. Releases are **write-once**: a version folder is never edited or deleted.</sub>
+<sub>**Release asset note:** GitHub currently lists the uploaded file as `unsigned.apk`. The SHA-256 above is GitHub's asset digest for that exact file. Verify its signing status before distributing it as an installable release. The signed, versioned APK folder described in [the release guide](docs/RELEASING.md) is not present in the repository yet.</sub>
+
+<details>
+<summary><b>Verify the downloaded release asset</b></summary>
+
+Expected SHA-256:
+
+```text
+99dc3ada235c7110d19ebad48d3cf9d3caa47bc9ae1d36aeb80c8fc76eff07b7
+```
+
+Windows PowerShell:
+
+```powershell
+Get-FileHash unsigned.apk -Algorithm SHA256
+```
+
+macOS / Linux:
+
+```bash
+sha256sum unsigned.apk
+```
+
+The result must match the hash above exactly.
+
+</details>
 
 ### Source and developer downloads
 
 | What | Download | Size | For |
 |:--|:--|:--|:--|
-| **Android folder only** (`android/`, clean: no build output, no keys) | [**SavahLive-android-source.zip**](downloads/SavahLive-android-source.zip?raw=true) | about 140 KB | Building SavahLive yourself in Android Studio or with Gradle |
-| **Whole repository** (dashboard + backend + app) | [**Download ZIP**](https://github.com/bonifacenjuguna/SavahBot/archive/refs/heads/main.zip) <!-- EDIT --> | about 2 MB | Deploying SavahBot |
-| **Just one folder** of your choice | [DownGit](https://download-directory.github.io/?url=https://github.com/bonifacenjuguna/SavahBot/tree/main/frontend) <!-- EDIT --> | varies | `frontend/` or `backend/` on their own |
+| **Android source only** (`android/`, excludes build output and signing keys) | [**SavahLive-android-source.zip**](https://github.com/bonifacenjuguna/SavahBot/raw/refs/heads/main/downloads/SavahLive-android-source.zip) | **141 KB** (144,353 bytes) | Building SavahLive in Android Studio or with Gradle |
+| **Whole repository** (dashboard + backend + Android app) | [**Download ZIP**](https://github.com/bonifacenjuguna/SavahBot/archive/refs/heads/main.zip) | Varies | Full source, deployment and development |
+| **Frontend only** | [Download frontend folder ZIP](https://download-directory.github.io/?url=https://github.com/bonifacenjuguna/SavahBot/tree/main/frontend) | Varies | Dashboard development |
+| **Backend only** | [Download backend folder ZIP](https://download-directory.github.io/?url=https://github.com/bonifacenjuguna/SavahBot/tree/main/backend) | Varies | API and service development |
 
-<sub>Refresh the Android zip after changing the app: `python scripts/pack_android.py`.</sub>
+<sub>The Android source ZIP is a separate, clean source package; it is not an APK. Folder-only downloads use an external directory-download service. For a trusted, complete copy, use GitHub's whole-repository ZIP or clone the repository. Refresh the Android source ZIP after changing the app: `python scripts/pack_android.py`.</sub>
 
 **Install in 30 seconds:** download the APK on the phone, open it, allow *Install unknown apps* for your browser when Android asks, then pair it from **Manage › SavahLive** in the dashboard. Updating later is the same: install the newer APK over the old one and your pairing stays.
 
