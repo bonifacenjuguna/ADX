@@ -1,0 +1,64 @@
+/* App themes beyond light and dark: AMOLED black and Soft (neumorphism), plus the sideways swipe between themes.
+   The theme order is in ui.ts (THEME_ORDER): a later theme slides in from the right, an earlier one from the left. */
+
+/* ---------- AMOLED: true black, so the pixels switch off ---------- */
+:root[data-theme="amoled"] {
+  --bg: #000000; --rail: #000000; --panel: #0b0c0f; --raised: #16181d; --line: #23262e; --ink: #e9ecf2; --muted: #98a1b3;
+  --accent: #7d95ff; --accent-ink: #0b1020; --ok: #3ccf93; --warn: #f0b34a; --bad: #ff6b76; --focus: #9db0ff;
+  --shadow-1: 0 0 0 1px rgba(255, 255, 255, 0.04);
+  color-scheme: dark;
+}
+:root[data-theme="amoled"] .tabbar { border-top-color: rgba(255, 255, 255, 0.1); }
+
+/* ---------- Soft: surfaces share the page colour and are shaped by light and shadow ---------- */
+:root[data-theme="soft"] {
+  --bg: #e3e8f0; --panel: #e3e8f0; --raised: #e3e8f0; --line: rgba(138, 149, 171, 0.3);
+  --ink: #1e2430; --muted: #5d667b;
+  --neu-out: 7px 7px 16px #c0c7d6, -7px -7px 16px #ffffff;
+  --neu-out-sm: 4px 4px 9px #c0c7d6, -4px -4px 9px #ffffff;
+  --neu-in: inset 4px 4px 9px #c0c7d6, inset -4px -4px 9px #ffffff;
+  --shadow-1: var(--neu-out);
+  color-scheme: light;
+}
+:root[data-theme="soft"] :is(.block, .sp-card, .kpi, .fig, .wb, .set-tile, .set-hit, .tile, .more-card, .modal, .sheet) {
+  background: var(--panel); border-color: transparent; box-shadow: var(--neu-out);
+}
+:root[data-theme="soft"] :is(.block, .kpi, .set-tile, .tile):hover { box-shadow: var(--neu-out); }
+:root[data-theme="soft"] :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+  background: var(--panel); border-color: transparent; box-shadow: var(--neu-in);
+}
+:root[data-theme="soft"] :is(.seg-control, .chip) { background: var(--panel); border-color: transparent; box-shadow: var(--neu-in); }
+:root[data-theme="soft"] .seg-control button[aria-pressed="true"] { background: var(--panel); box-shadow: var(--neu-out-sm); }
+:root[data-theme="soft"] .btn:not(.primary):not(.danger) { box-shadow: var(--neu-out-sm); }
+:root[data-theme="soft"] .topbar { border-bottom-color: transparent; box-shadow: 0 6px 14px -8px #c0c7d6; }
+
+/* ---------- the swipe ---------- */
+:root[data-theme-dir]::view-transition-old(root),
+:root[data-theme-dir]::view-transition-new(root) { animation-duration: 440ms; animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); animation-fill-mode: both; mix-blend-mode: normal; }
+:root[data-theme-dir="next"]::view-transition-old(root) { animation-name: theme-out-left; }
+:root[data-theme-dir="next"]::view-transition-new(root) { animation-name: theme-in-right; z-index: 2; box-shadow: -22px 0 40px rgba(0, 0, 0, 0.28); }
+:root[data-theme-dir="prev"]::view-transition-old(root) { animation-name: theme-out-right; }
+:root[data-theme-dir="prev"]::view-transition-new(root) { animation-name: theme-in-left; z-index: 2; box-shadow: 22px 0 40px rgba(0, 0, 0, 0.28); }
+@keyframes theme-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes theme-in-left { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@keyframes theme-out-left { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-28%); opacity: 0.55; } }
+@keyframes theme-out-right { from { transform: translateX(0); opacity: 1; } to { transform: translateX(28%); opacity: 0.55; } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+/* ---------- the bottom tab bar follows the theme (it used to stay dark navy on the light themes) ---------- */
+:root[data-theme="light"] .tabbar, :root[data-theme="soft"] .tabbar { background: var(--raised); color: var(--ink); border-top: 1px solid var(--line); }
+:root[data-theme="soft"] .tabbar { background: var(--bg); border-top-color: transparent; box-shadow: 0 -8px 18px -8px #c0c7d6; }
+:root[data-theme="light"] .tab, :root[data-theme="soft"] .tab { color: var(--muted); }
+:root[data-theme="light"] .tab[aria-current="page"], :root[data-theme="soft"] .tab[aria-current="page"],
+:root[data-theme="light"] .tab[aria-current="page"] > .ico, :root[data-theme="soft"] .tab[aria-current="page"] > .ico,
+:root[data-theme="light"] .tab[aria-current="page"] > svg, :root[data-theme="soft"] .tab[aria-current="page"] > svg { color: var(--ink); }
+:root[data-theme="light"] .tab::before, :root[data-theme="soft"] .tab::before { background: var(--accent); }
+:root[data-theme="light"] .tab:focus-visible, :root[data-theme="soft"] .tab:focus-visible { outline-color: var(--focus); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .tabbar { background: var(--raised); color: var(--ink); border-top: 1px solid var(--line); }
+  :root:not([data-theme]) .tab { color: var(--muted); }
+  :root:not([data-theme]) .tab[aria-current="page"], :root:not([data-theme]) .tab[aria-current="page"] > .ico, :root:not([data-theme]) .tab[aria-current="page"] > svg { color: var(--ink); }
+  :root:not([data-theme]) .tab::before { background: var(--accent); }
+}

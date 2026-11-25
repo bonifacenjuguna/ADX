@@ -1,52 +1,42 @@
-# Androx v0.0.1
+# SavahBot
 
-Local-first Android automation. Triggers, rules and actions run on the device; nothing is sent anywhere.
-Kotlin + Jetpack Compose + Material 3. Build with `./gradlew assembleDebug` (or Android Studio).
+A personal, owner-only moderation and utility bot for YouTube live chat, controlled from a web dashboard and from Telegram.
 
-## What is in it
+- **Backend** (`backend/`): Python 3.13, Starlette + uvicorn, PostgreSQL (SQLite for local use). Runs on Railway.
+- **Dashboard** (`frontend/`): Vite + TypeScript, no framework, responsive for phone, tablet and desktop, installable as an app. Runs on Vercel.
+- **Telegram**: webhook or polling, switchable at any time from the dashboard or with `/tgmode`.
+- **Demo mode**: simulated chat and nine scenarios (raid, link spammer, caps flood, bot timing, disguised words, ...). Nothing is sent to YouTube or Telegram and no quota is used. Switch between Demo and Live in the sidebar; the status card at the top shows which one you are in (flask = demo, red broadcast icon = on air, power icon = standby). Switching mode redraws every page, so Demo and Live data never mix.
 
-- **Home**: what's next (with countdown), success rate, 7-day activity, quick run, ideas, recent runs, and warnings for
-  missing permissions.
-- **Automations**: swipe right to run, left to delete (with Undo). Search, sort, filters with counts, status pills.
-- **Editors**: Builder (guided *When → Only if → Then do*, with a plain-language summary), JavaScript (auto-indent,
-  snippets, API reference), Visual workflow (colour-coded nodes). "Save and run" shows the log right there.
-- **History**: success ring, filters with counts, per-automation filter, step-by-step run log, *Run again*, *Copy log*.
-- **Ideas**: ten ready-made automations to add and tweak.
-- **Variables**: create, edit and delete the values shared by all automations.
-- **Settings**: theme, Material You or accent colours, pure black, haptics, permissions, back up / restore (JSON).
+There is no AI in this version. Moderation is a set of explainable algorithms, each of which shows up as a named signal with a weight, so you can always see why a message scored what it did.
 
-## Triggers / rules / actions
+---
 
-| Triggers | Rules (combine with *all* / *any*) | Actions |
-|---|---|---|
-| Manual | Battery level, Charging | Notification, Toast, Vibrate, Speak, Play sound |
-| Schedule (time + days) | Time of day (can wrap midnight), Days of week | Flashlight, Set volume, Copy to clipboard |
-| Interval (every N min/h, min 5) | Wi-Fi, Screen, Ringer mode | If / else, Repeat, Wait (≤10 s, ≤30 s per run) |
-| Once (date + time, then turns off) | Battery Saver, Airplane mode | Set variable (set, add, subtract, multiply, append, remove) |
-| Device starts | Variable comparison | Run automation, Write to log, Run JavaScript |
+## Start here
 
-Text fields accept `{{battery}}`, `{{charging}}`, `{{time}}`, `{{date}}`, `{{datetime}}`, `{{weekday}}`, `{{timestamp}}`,
-`{{wifi}}`, `{{screen}}`, `{{ringer}}`, `{{random}}`, `{{automation}}`, `{{index}}` (inside Repeat) and any variable.
+| I want to | Read |
+|---|---|
+| Deploy it | docs/DEPLOYMENT.md |
+| Know every setting | docs/ENVIRONMENT.md |
+| Protect sign-in | docs/SECURITY.md |
+| Get push notifications | docs/NOTIFICATIONS.md, docs/PWA_AND_PUSH_PLATFORMS.md |
+| Add weather | docs/WEATHER.md |
+| Float your stream over other apps (Android) | docs/SAVAHLIVE.md, android/README.md |
+| Release a new version of the Android app | docs/RELEASING.md |
+| Back up and restore | docs/BACKUP_AND_RECOVERY.md |
+| Fix a problem | docs/TROUBLESHOOTING.md |
+| Everything else | docs/README.md |
 
-## JavaScript API
+## Quick start (local)
 
-`androx.log`, `notify`, `getVar`, `setVar`, `deleteVar`, `battery`, `isCharging`, `now`, `toast`, `vibrate`, `copy`,
-`speak`, `isWifiConnected`, `isScreenOn`, `ringer`, `version`. Runs in Rhino, stops after 5 s, can reach nothing else.
-The in-app *API reference* is generated from the same list.
+```bash
+cd backend && python -m venv .venv && source .venv/bin/activate
+pip install -r requirements-dev.txt
+uvicorn app.main:create_app --factory --reload --port 8000
+cd ../frontend && npm install && VITE_API_URL=http://localhost:8000 npm run dev
+```
 
-## Design system
+On first start a generated owner password is printed in the log (or set `OWNER_PASSWORD`). Details: docs/TESTING.md.
 
-Material 3 components throughout: large collapsing top bars, tonal cards (24–28 dp corners), grouped settings cards,
-extended FAB that collapses on scroll, Android 14-style switches, primary tab row, fade-through navigation motion,
-haptics. Icons are Material Design Icons (Apache-2.0) as vector drawables (`res/drawable/mdi_*.xml`). The wordmark is
-`res/drawable/ic_androx_wordmark.xml` (stroke-based, tintable); PNG/SVG copies are in `brand/`.
+## What is and is not verified
 
-## Permissions
-
-`POST_NOTIFICATIONS`, `SCHEDULE_EXACT_ALARM`, `RECEIVE_BOOT_COMPLETED`, `VIBRATE`, `ACCESS_NETWORK_STATE`.
-No internet permission.
-
-## Tests
-
-`./gradlew testDebugUnitTest` covers the model, the engine (including If/else, Repeat and rules), workflow compilation,
-scheduling math and the backup format.
+Automated tests use fakes, never the real YouTube, Firebase or Open-Meteo, and cannot exercise real browsers, phones, hardware passkeys or PostgreSQL. The list and a manual checklist are in docs/TESTING.md. Expect to fix small things on the first real run; Settings > Developer and the logs are designed to make them easy to find.

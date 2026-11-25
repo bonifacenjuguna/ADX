@@ -1,23 +1,22 @@
-# Androx 0.0.2 build progress
 
-Source of truth: `Androx 0.0.2 - Master Specification.md` (section numbers below refer to it).
+## CP14 review fixes
+Independent review found 10 issues; fixed: push with bell off, bare-404 deleting devices, weather cooldown/signature/unmonitored place/staleness, re-register keeping disabled state, per-row delivery guard, summary leaking sensitive titles, null forecast crash, 0,0 location.
 
-| Layer | Spec | Status |
-|---|---|---|
-| 0 Tooling upgrade | 4 | done (versions below, verify on first build) |
-| 1 Data model v2, migration, storage, daily stats | 5.2, 5.4 | done: `core/model`, `core/migrate`, `core/store` |
-| 2 Registries, typed variables, templates | 5.1, 5.3 | done for existing types; engine v2 NOT yet |
-| 2b Engine v2 (executors, run queue, simulator) | 5.5 | done: `core/engine` + `EngineTest` (not yet wired to the app; the UI still runs the v0.0.1 engine) |
-| 3 Trigger hub, Listener, constraints, actions | 5.6, 15, 17, 18 | done for everything that needs no extra permission; permission-gated items are visible "Coming later" slots. Android pieces are written but not yet wired into `AppContainer` (wiring happens in the app-shell layer) |
-| 4 Internet package | 14 | next |
-| 5-12 Shell, Home, Flows, editors, Studio, Settings, integrations, polish | 6-13, 16, 19-21 | not started |
+## 1.3.0
+Bug batch and new features: see CHANGELOG.md. Unverified here: live YouTube/FCM/Telegram/Postgres behaviour, voice output, vite build. One pre-existing failing test (timer modes 400 vs 422) left for the owner's decision.
 
-## Version choices to verify on the first build
-AGP 8.13.0, Gradle 8.13, Kotlin 2.2.20, Compose BOM 2025.09.00 (material3 1.4.0), core-ktx 1.17.0, activity-compose 1.11.0,
-lifecycle 2.9.4, navigation 2.9.5, coroutines 1.10.2, serialization 1.9.0. If any version is rejected, paste the error back.
-`kotlinOptions {}` was replaced by `kotlin { compilerOptions {} }` (Kotlin 2.2 requirement).
+## 1.5.0 (SavahLive)
+Added the Android overlay companion: backend (`savahlive.py`, `api/savahlive_routes.py`, tests in `tests/test_savahlive.py`), the Manage > SavahLive page, the optional "also unpair phones" tickbox on password change, and the `android/` project. Verified here: the service tests (pairing, keys, expiry, revoke, rotation, feed batching/filtering/cut-off) with fakes, the frontend type-check and its 53 tests. NOT verified here: the backend HTTP tests (no starlette/pytest in this environment; docs/API.md and ENVIRONMENT.md were updated by hand/script to match), `vite build`, and every line of Kotlin (no Android SDK, never compiled or run). First real run: `cd android && gradle wrapper && ./gradlew assembleDebug`, then follow the first-run checklist in android/README.md.
 
-## Design note
-The v0.0.1 UI and engine are untouched and still compile against the legacy `Automation` model.
-New code lives in `com.androx.app.core`. The UI layers will switch over to Flows and the legacy classes
-stay only as the migration source.
+## 1.5.0 follow-up (release setup)
+The owner built and ran the SavahLive APK (debug) on a phone: the Kotlin compiled unchanged. Added: write-once `releases/` folder and the "Protect releases" workflow, `scripts/release-savahlive.ps1`, `scripts/bump_version.py`, `scripts/check_releases.py`, root `.gitignore` and `.gitattributes`, `docs/RELEASING.md`, and a backend repo-hygiene test (`tests/test_repo.py`). Still to do by the owner: commit the Gradle wrapper, create the release key, turn on the GitHub ruleset, then run the first signed release. Not verified here: the PowerShell script and the GitHub workflow (no PowerShell or GitHub in this environment).
+
+## 1.6.0 (SavahLive redesign)
+Panel + edge tab (Panel/Tab/Overlay/PanelView/TabWindow), themes and SVG icons, guided app screens, redesigned web page, `hide_seconds` and `download_url` settings, logo proportion fix. Verified here: backend service tests (10, against this tree), frontend type-check, icon path validation and rendering, theme contrast maths, bracket/cross-reference scans of the Kotlin. NOT verified: any Kotlin compile or run, the backend HTTP tests, `vite build`, the PowerShell script and the workflow.
+
+
+## 1.6.1 (SavahLive stability rebuild)
+Single-window Overlay with PanelView/TabView, guarded callbacks, edge and corner resizing, in-app settings, separate pop-out controls, send-to-chat (backend + phone + dashboard), web page fixes. Verified here: tsc, SavahLive and config backend tests, Geometry logic executed, Kotlin syntax check (no new unresolved names). NOT verified: any Android compile or run.
+
+## 1.6.2 (SavahLive extras)
+Pin, milestones, phone moderation (backend route + two switches), saved looks, auto-open/auto-stop, stream summary, connection banner, update check, notification card with look button. Verified here: backend tests (SavahLive incl. HTTP), tsc, the plain Kotlin logic (versions, milestones, tally) by running it, Kotlin syntax check. NOT verified: any Android compile or run.
