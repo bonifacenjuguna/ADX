@@ -1,6 +1,6 @@
 <!--
   EDIT ME: every place you may want to change is marked with "EDIT".
-  1. Replace YOUR-USER/YOUR-REPO (search for it) with your GitHub user and repository name.
+  1. Replace bonifacenjuguna/SavahBot (search for it) with your GitHub user and repository name.
   2. Add a row to the download table after each release (see "Downloads").
 -->
 <div align="center">
@@ -46,8 +46,8 @@ There is no AI in the loop. Moderation is a set of explainable algorithms, and e
 | What | Download | Size | For |
 |:--|:--|:--|:--|
 | **Android folder only** (`android/`, clean: no build output, no keys) | [**SavahLive-android-source.zip**](downloads/SavahLive-android-source.zip?raw=true) | about 140 KB | Building SavahLive yourself in Android Studio or with Gradle |
-| **Whole repository** (dashboard + backend + app) | [**Download ZIP**](https://github.com/YOUR-USER/YOUR-REPO/archive/refs/heads/main.zip) <!-- EDIT --> | about 2 MB | Deploying SavahBot |
-| **Just one folder** of your choice | [DownGit](https://download-directory.github.io/?url=https://github.com/YOUR-USER/YOUR-REPO/tree/main/frontend) <!-- EDIT --> | varies | `frontend/` or `backend/` on their own |
+| **Whole repository** (dashboard + backend + app) | [**Download ZIP**](https://github.com/bonifacenjuguna/SavahBot/archive/refs/heads/main.zip) <!-- EDIT --> | about 2 MB | Deploying SavahBot |
+| **Just one folder** of your choice | [DownGit](https://download-directory.github.io/?url=https://github.com/bonifacenjuguna/SavahBot/tree/main/frontend) <!-- EDIT --> | varies | `frontend/` or `backend/` on their own |
 
 <sub>Refresh the Android zip after changing the app: `python scripts/pack_android.py`.</sub>
 
